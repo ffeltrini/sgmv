@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Servicio\" />
     <Folder Include="wwwroot\img\repuestos\" />
   </ItemGroup>
 
