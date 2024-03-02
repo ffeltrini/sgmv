@@ -1,0 +1,208 @@
+﻿@model IEnumerable<MVC.Models.CompraViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        table th,
+        table td {
+            padding: 8px;
+            /*border: 1px solid #ddd;*/
+        }
+
+            /* Set fixed widths for each column */
+            table th:nth-child(1),
+            table td:nth-child(1) {
+                width: 200px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(2),
+            table td:nth-child(2) {
+                width: 200px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(3),
+            table td:nth-child(3) {
+                width: 265px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(4),
+            table td:nth-child(4) {
+                width: 50px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(5),
+            table td:nth-child(5) {
+                width: 50px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(6),
+            table td:nth-child(6) {
+                width: 50px; /* Adjust the width as needed */
+            }
+</style>
+
+<h1>Listado de Compras</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Alta Compra</a>
+    <a class="btn btn-primary" asp-action="FiltrarComprasPorMonto">Filtrar Compras por Monto</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                Proveedor
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recibida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaRecepcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiasDemora)
+            </th>
+            <th>
+                Repuestos
+            </th>
+            @*<th>
+                Acciones
+            </th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var compra in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => compra.Id)
+                </td>
+                <td>
+                    @compra.Fecha.ToShortDateString()
+                </td>
+                <td>
+                    @if (compra.ProveedorId != null)
+                    {
+                        var proveedor = compra.Proveedores.FirstOrDefault(p => p.Id == compra.ProveedorId);
+                        if (proveedor != null)
+                        {
+                            @proveedor.Nombre
+                        }
+                    }
+                </td>
+                <td >
+                    <button style="@(compra.Recibida!=true?"color:#FFFFFF; background-color: #F80000; font-weight: bold;" : "color:#FFFFFF; background-color:#008000; font-weight: bold;")" onclick="compraRecibida(@compra.Id, this)" @(compra.Recibida ? "disabled" : "")>
+                        @(compra.Recibida ? "SI" : "NO")
+                    </button>
+                </td>
+                <td>
+                    @if (compra.FechaRecepcion != default(DateTime))
+                    {
+                        //@Html.DisplayFor(modelItem => compra.FechaRecepcion)
+                        @compra.FechaRecepcion.ToShortDateString()
+                    }
+                </td>
+                <td style="@(compra.DiasDemora > 10 ? "background-color: red;color:#FFFFFF;" : (compra.DiasDemora > 5 && compra.DiasDemora<=10 ? "background-color: yellow;" : (compra.DiasDemora<= 5 ? "background-color: green;color:#FFFFFF;" : "")))">
+                    @Html.DisplayFor(modelItem => compra.DiasDemora)
+                </td>
+                <td>
+                    <label class="form-switch">
+                        <input onclick="toggleSection(this)" type="checkbox" class="form-switch-input toggle-repuestos-details">
+                        <span class="form-switch-slider"></span>
+                    </label>
+                </td>
+                @*<td>
+                    @Html.ActionLink("Editar", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Detalles", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>*@
+            </tr>
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewData["ErrorMessage"]
+                </div>
+            }
+                <!-- Repuestos details header -->
+            <tr class="section-repuestos" style="display: none;">
+                <th style="background-color: #5d6161; color:#FFFFFF;">Repuesto</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Cantidad</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Precio</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Subtotal</th>
+                <section>
+                    @foreach (var repuesto in compra.ListaCompraRepuesto)
+                    {
+                    <tr class="section-repuestos" style="display: none; background-color: #BFC9CA;">
+                        <td>@repuesto.Repuesto.Nombre</td>
+                        <td>@repuesto.Cantidad</td>
+                        <td>@repuesto.Precio</td>
+                        <td>@(repuesto.Cantidad * repuesto.Precio)</td>
+                    </tr>
+                    }
+                </section>
+                
+            <tr class="section-repuestos" style="display: none;">
+                @*<td colspan="2"></td>*@
+                <td style="border:2px solid #808B96;"><strong>Total:</strong></td>
+                <td style="border:2px solid #808B96; font-weight: bold;">@compra.ListaCompraRepuesto.Sum(repuesto=>repuesto.Precio*repuesto.Cantidad)</td>
+                </tr>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        function toggleSection(checkbox) {
+            $(checkbox).closest('tr').nextUntil(':not(.section-repuestos)').toggle();
+        }
+
+        function compraRecibida(compraId,buttonElement) {
+
+            buttonElement.disabled=true;
+            
+            $.ajax({
+                url: '@Url.Action("CompraRecibida", "Compra")',
+                type: 'POST',
+                data: { id: compraId }, // Ensure the parameter name matches the controller action
+                success: function (response) {
+                    //// Handle success response
+                    
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    //console.error(xhr.responseText);
+                    
+                }
+            });
+            location.reload();
+        }
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

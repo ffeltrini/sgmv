@@ -1,0 +1,103 @@
+﻿@model MVC.Models.CompraViewModel
+
+<h2>Alta Compra</h2>
+
+@if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+@using (Html.BeginForm("Create", "Compra", FormMethod.Post))
+{
+    <div class="form-group">
+        <label asp-for="Fecha" class="control-label"></label>
+        <input type="date" id="fechaInput" asp-for="Fecha" class="form-control" readonly />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProveedorId" class="control-label"></label>
+        <select asp-for="ProveedorId" asp-items="@Model.Proveedores.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Nombre })" class="form-control">
+            <option value="">-- Seleccione un proveedor --</option>
+        </select>
+        <span asp-validation-for="ProveedorId" class="text-danger"></span>
+    </div>
+
+    <!-- Add material selection and quantities dynamically -->
+    <h4>Repuestos</h4>
+    <table id="repuestosTable">
+        <thead>
+            <tr>
+                @*<th>Repuesto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>*@
+            </tr>
+        </thead>
+        <tbody id="repuestosTableBody">
+            <!-- Dynamic rows will be added here -->
+        </tbody>
+    </table>
+
+    <button type="button" id="btnAddRepuesto">Agregar Repuesto</button>
+
+    <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get current date and format it as yyyy-mm-dd
+            var currentDate = new Date().toISOString().split('T')[0];
+            document.getElementById("fechaInput").value = currentDate;
+
+            // Track the index for dynamic elements
+            var repuestoIndex = 0;
+
+            // Add labels for Repuesto, Cantidad, and Precio outside the loop
+            var labelRow = document.createElement("tr");
+            
+
+            // Handle click event for the "Add Repuesto" button
+            document.getElementById("btnAddRepuesto").addEventListener("click", function () {
+                var newRow = document.createElement("tr");
+                if(repuestoIndex<1)
+                {
+                    labelRow.innerHTML = `<td><label for="repuesto" class="control-label">Repuesto</label></td>
+                                                          <td><label for="cantidad" class="control-label">Cantidad</label></td>
+                                                          <td><label for="precio" class="control-label">Precio</label></td>`;
+                    document.getElementById("repuestosTableBody").appendChild(labelRow);
+
+                }
+                
+                newRow.innerHTML = `<td>
+                                            <select name="RepuestosId[${repuestoIndex}]" class="form-control">
+                                                @foreach (var repuesto in Model.Repuestos)
+                                                {
+                                                      <option value="@repuesto.Id">@repuesto.Nombre</option>
+                                                }
+                                            </select>
+                                             </td>
+                                             <td>
+                                                         <input type="number" name="Cantidad[${repuestoIndex}]" class="form-control" value="1" />
+                                             </td>
+                                             <td>
+                                                         <input type="number" name="Precio[${repuestoIndex}]" class="form-control" value="0.00" step="0.01" />
+                                             </td>`;
+                document.getElementById("repuestosTableBody").appendChild(newRow);
+
+                repuestoIndex++;
+            });
+        });
+    </script>
+}
+

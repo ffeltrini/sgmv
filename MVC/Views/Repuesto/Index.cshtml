@@ -1,0 +1,77 @@
+﻿@model IEnumerable<MVC.Models.RepuestoViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Listado de Repuestos</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Alta Repuesto</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Medida)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Unidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockMin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Codigo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Medida)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Unidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockMin)
+            </td>
+                <td style="@(item.Stock < item.StockMin ? "background-color: #DC3545; font-weight: bold;" : (item.Stock == item.StockMin ? "background-color: yellow; font-weight: bold;" : "background-color: green; font-weight: bold;"))">
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

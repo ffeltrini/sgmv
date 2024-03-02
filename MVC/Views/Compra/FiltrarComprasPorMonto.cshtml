@@ -1,0 +1,47 @@
+﻿<h1>Filtrar Compras por Monto</h1>
+
+@*<div id="mensaje" class="alert alert-danger" role="alert">
+    @ViewBag.Mensaje
+</div>*@
+
+@if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+
+<form id="compraForm" action="~/Compra/FiltrarComprasPorMonto" method="POST">
+    <label>Monto1</label>
+    <input type="text" name="monto1" />
+    <br />
+    <label>Monto2</label>
+    <input type="text" name="monto2" />
+    <br />
+    <input type="submit" name="Filtrar" value="Filtrar" />
+
+</form>
+<br />
+<div id="montoDisplay"></div> <!-- Div to display monto1 and monto2 -->
+<div>
+    <a asp-action="Index">Regresar a la lista</a>
+</div>
+@ViewBag.Mensaje;
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.getElementById("compraForm").onsubmit = function () {
+        // Get the values of monto1 and monto2
+        var monto1 = document.getElementById("monto1").value;
+        var monto2 = document.getElementById("monto2").value;
+
+        // Create a string to display the values
+        var displayText = "Monto1: " + monto1 + ", Monto2: " + monto2;
+
+        // Display the values in the specified div
+        document.getElementById("montoDisplay").innerText = displayText;
+
+        // Prevent form submission
+        return false;
+    };
+</script>
