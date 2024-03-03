@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Auditoria\" />
     <Folder Include="wwwroot\img\repuestos\" />
   </ItemGroup>
 

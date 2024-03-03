@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LogicaAccesoDatos.Repositorios
 {
-    public class RepositorioAuditorias:IRepositorioAuditorias
+    public class RepositorioAuditorias : IRepositorio<Auditoria>
     {
         public SGMVContext Contexto { get; set; }
         public RepositorioAuditorias(SGMVContext contexto)
@@ -17,9 +17,10 @@ namespace LogicaAccesoDatos.Repositorios
             Contexto = contexto;
         }
 
-        public void Add(Auditoria item)
+        public void Add(Auditoria auditoria)
         {
-            throw new NotImplementedException();
+            Contexto.Auditorias.Add(auditoria);
+            Contexto.SaveChanges();
         }
 
         public void Update(Auditoria item)
@@ -39,7 +40,7 @@ namespace LogicaAccesoDatos.Repositorios
 
         public IEnumerable<Auditoria> GetAll()
         {
-            throw new NotImplementedException();
+            return Contexto.Auditorias;
         }
     }
 }

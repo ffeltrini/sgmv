@@ -1,6 +1,7 @@
 using LogicaAccesoDatos.BaseDatos;
 using LogicaAccesoDatos.Interfaces;
 using LogicaAccesoDatos.Repositorios;
+using LogicaAplicacion.CasosDeUso.CUAuditoria;
 using LogicaAplicacion.CasosDeUso.CUCompra;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
@@ -41,6 +42,10 @@ namespace MVC
             builder.Services.AddScoped<ICUCreateRepuesto, CUCreateRepuesto>();
             builder.Services.AddScoped<ICUGetByIdRepuesto, CUGetByIdRepuesto>();
             builder.Services.AddScoped<ICUUpdateRepuesto, CUUpdateRepuesto>();
+
+            builder.Services.AddScoped<IRepositorio<Auditoria>, RepositorioAuditorias>();
+            builder.Services.AddScoped<ICUCreateAuditoria, CUCreateAuditoria>();
+            builder.Services.AddScoped<ICUGetAllAuditoria, CUGetAllAuditoria>();
 
             builder.Services.AddDbContext<SGMVContext>(Options=>Options.UseSqlServer(cadenaConexion));
 

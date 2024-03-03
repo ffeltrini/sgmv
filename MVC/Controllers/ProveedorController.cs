@@ -83,6 +83,13 @@ namespace MVC.Controllers
                         Nacional = proveedorViewModel.Nacional
                     };
                     CUCreateProveedor.CreateProveedor(proveedor);
+                    Auditoria auditoria = new Auditoria()
+                    {
+                        NombreUsuario = HttpContext.Session.GetString(""),
+                        FechaHora = DateTime.Now,
+                        IdEntidad = proveedor.Id,
+                        TipoEntidad = proveedor.GetType().Name.ToString()
+                    };
                     return RedirectToAction(nameof(Index));
                 }
                 catch (ProveedorException ex)

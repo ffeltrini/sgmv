@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaAccesoDatos.Interfaces
+namespace LogicaAplicacion.CasosDeUso.CUAuditoria
 {
-    public interface IRepositorioAuditorias:IRepositorio<Auditoria>
+    public interface ICUGetAllAuditoria
     {
+        IEnumerable<Auditoria> GetAllAuditoria(); 
     }
 }
