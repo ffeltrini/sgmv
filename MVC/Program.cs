@@ -4,6 +4,7 @@ using LogicaAccesoDatos.Repositorios;
 using LogicaAplicacion.CasosDeUso.CUCompra;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
+using LogicaAplicacion.CasosDeUso.CUUsuario;
 using LogicaNegocio.EntidadesNegocio;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,11 @@ namespace MVC
             builder.Services.AddScoped<ICUCreateRepuesto, CUCreateRepuesto>();
             builder.Services.AddScoped<ICUGetByIdRepuesto, CUGetByIdRepuesto>();
             builder.Services.AddScoped<ICUUpdateRepuesto, CUUpdateRepuesto>();
+
+            builder.Services.AddScoped<IRepositorioUsuarios,RepositorioUsuarios>();
+            builder.Services.AddScoped<ICUCreateUsuario, CUCreateUsuario>();
+            builder.Services.AddScoped<ICUGetAllUsuario,CUGetAllUsuario>();
+            builder.Services.AddScoped<ICULogin, CULogin>();    
 
             builder.Services.AddDbContext<SGMVContext>(Options=>Options.UseSqlServer(cadenaConexion));
 

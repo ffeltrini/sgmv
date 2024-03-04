@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form action="~/Usuario/IniciarSesion" method="POST">
+    <label>Nombre</label>
+    <br />
+    <input type="text" name="nombre" />
+    <br />
+    <label>Contraseña</label>
+    <br />
+    <input type="password" name="contrasenia" />
+    <br />
+    <br />
+    <input type="submit" value="Ingresar" />
+
+</form>
