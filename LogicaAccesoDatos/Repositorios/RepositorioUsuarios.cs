@@ -17,9 +17,10 @@ namespace LogicaAccesoDatos.Repositorios
             Contexto = contexto;
         }
 
-        public void Add(Usuario item)
+        public void Add(Usuario usuario)
         {
-            throw new NotImplementedException();
+            Contexto.Usuarios.Add(usuario);
+            Contexto.SaveChanges();
         }
 
         public void Update(Usuario item)
@@ -39,7 +40,14 @@ namespace LogicaAccesoDatos.Repositorios
 
         public IEnumerable<Usuario> GetAll()
         {
-            throw new NotImplementedException();
+            return Contexto.Usuarios;
+        }
+
+        public Usuario? Login(string nombre, string contrasenia)
+        {
+            return Contexto.Usuarios
+                .Where(u => u.Nombre == nombre && u.Contrasenia == contrasenia)
+                .SingleOrDefault();
         }
     }
 }
