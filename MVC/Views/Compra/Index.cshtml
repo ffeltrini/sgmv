@@ -103,8 +103,8 @@
                         }
                     }
                 </td>
-                <td >
-                    <button style="@(compra.Recibida!=true?"color:#FFFFFF; background-color: #F80000; font-weight: bold;" : "color:#FFFFFF; background-color:#008000; font-weight: bold;")" onclick="compraRecibida(@compra.Id, this)" @(compra.Recibida ? "disabled" : "")>
+                <td>
+                    <button title="Confirmar" style="@(compra.Recibida!=true?"color:#FFFFFF; background-color: #F80000; font-weight: bold;" : "color:#FFFFFF; background-color:#008000; font-weight: bold;")" onclick="compraRecibida(@compra.Id, this)" @(compra.Recibida ? "disabled" : "")>
                         @(compra.Recibida ? "SI" : "NO")
                     </button>
                 </td>

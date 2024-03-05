@@ -68,6 +68,17 @@ namespace MVC.Controllers
                     Recibida = compra.Recibida,
                     FechaRecepcion=compra.FechaRecepcion
                 };
+                if (!compraViewModel.Recibida)
+                {
+                    TimeSpan difDias = DateTime.Now - compraViewModel.Fecha;
+                    int dias = difDias.Days;
+                    compraViewModel.DiasDemora = dias;
+                }
+                else
+                {
+                    compraViewModel.DiasDemora = compra.DiasDemora;
+                }
+
 
                 //
                 compraViewModel.Repuestos = compra.ListaCompraRepuesto
@@ -313,6 +324,7 @@ namespace MVC.Controllers
                     compra.FechaRecepcion = DateTime.Now;
                     TimeSpan difDias = compra.FechaRecepcion - compra.Fecha;
                     int dias = difDias.Days;
+                    compra.DiasDemora = dias;
                     CUUpdateCompra.UpdateCompra(compra);
                     foreach (var repuesto in compra.ListaCompraRepuesto)
                     {
