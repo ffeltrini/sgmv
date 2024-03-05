@@ -74,7 +74,7 @@ namespace MVC.Controllers
                         Contrasenia = usuarioViewModel.Contrasenia,
                         Confirmacion = usuarioViewModel.Confirmacion,
                         Rol = usuarioViewModel.Rol,
-                        Fecha = usuarioViewModel.Fecha
+                        Fecha = DateTime.Now
                     };
                     CUCreateUsuario.CreateUsuario(usuario);
                     return RedirectToAction(nameof(Index));
