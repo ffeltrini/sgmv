@@ -1,9 +1,11 @@
 ﻿using LogicaAccesoDatos.BaseDatos;
 using LogicaAccesoDatos.Interfaces;
 using LogicaNegocio.EntidadesNegocio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,12 +42,13 @@ namespace LogicaAccesoDatos.Repositorios
 
         public IEnumerable<Usuario> GetAll()
         {
-            return Contexto.Usuarios;
+            return Contexto.Usuarios.Include(t => t.Rol);
         }
 
         public Usuario? Login(string nombre, string contrasenia)
         {
             return Contexto.Usuarios
+                .Include(t=>t.Rol)
                 .Where(u => u.Nombre == nombre && u.Contrasenia == contrasenia)
                 .SingleOrDefault();
         }
