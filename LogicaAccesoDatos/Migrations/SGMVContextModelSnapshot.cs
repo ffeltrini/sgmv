@@ -45,6 +45,10 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<bool>("Recibida")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Responsable")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProveedorId");

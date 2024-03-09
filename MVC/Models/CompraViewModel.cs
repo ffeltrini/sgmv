@@ -7,6 +7,8 @@ namespace MVC.Models
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
         public int ProveedorId { get; set; }
+        [Display(Name = "Responsable Compra")]
+        public string? Responsable { get; set; }
         [Display(Name = "Compra Recibida")]
         public bool Recibida { get; set; }
         [Display(Name = "Fecha de Recepción")]

@@ -14,6 +14,7 @@ namespace LogicaNegocio.EntidadesNegocio
         public DateTime Fecha { get; set; }
         [Required(ErrorMessage = "El nombre del proveedor es requerido")]
         public Proveedor Proveedor { get; set; }
+        public string? Responsable { get; set; }
         public bool Recibida { get; set; }
         public DateTime FechaRecepcion { get; set; }
         public int DiasDemora { get; set; }

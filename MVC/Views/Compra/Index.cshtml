@@ -67,6 +67,9 @@
                 Proveedor
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Responsable)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Recibida)
             </th>
             <th>
@@ -102,6 +105,9 @@
                             @proveedor.Nombre
                         }
                     }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => compra.Responsable)
                 </td>
                 <td >
                     <button style="@(compra.Recibida!=true?"color:#FFFFFF; background-color: #F80000; font-weight: bold;" : "color:#FFFFFF; background-color:#008000; font-weight: bold;")" onclick="compraRecibida(@compra.Id, this)" @(compra.Recibida ? "disabled" : "")>

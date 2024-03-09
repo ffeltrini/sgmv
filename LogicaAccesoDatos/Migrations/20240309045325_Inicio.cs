@@ -27,7 +27,7 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TipoRol",
+                name: "TipoRoles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -36,7 +36,7 @@ namespace LogicaAccesoDatos.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoRol", x => x.Id);
+                    table.PrimaryKey("PK_TipoRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,6 +47,7 @@ namespace LogicaAccesoDatos.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProveedorId = table.Column<int>(type: "int", nullable: false),
+                    Responsable = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Recibida = table.Column<bool>(type: "bit", nullable: false),
                     FechaRecepcion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiasDemora = table.Column<int>(type: "int", nullable: false)
@@ -78,9 +79,9 @@ namespace LogicaAccesoDatos.Migrations
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usuarios_TipoRol_RolId",
+                        name: "FK_Usuarios_TipoRoles_RolId",
                         column: x => x.RolId,
-                        principalTable: "TipoRol",
+                        principalTable: "TipoRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -183,7 +184,7 @@ namespace LogicaAccesoDatos.Migrations
                 name: "Repuestos");
 
             migrationBuilder.DropTable(
-                name: "TipoRol");
+                name: "TipoRoles");
 
             migrationBuilder.DropTable(
                 name: "Compras");

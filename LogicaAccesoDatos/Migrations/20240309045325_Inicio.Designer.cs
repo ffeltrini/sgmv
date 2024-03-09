@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogicaAccesoDatos.Migrations
 {
     [DbContext(typeof(SGMVContext))]
-    [Migration("20240307044208_TipoRoles")]
-    partial class TipoRoles
+    [Migration("20240309045325_Inicio")]
+    partial class Inicio
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,10 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.Property<bool>("Recibida")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Responsable")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
