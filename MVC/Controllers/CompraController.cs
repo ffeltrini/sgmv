@@ -65,6 +65,7 @@ namespace MVC.Controllers
                         FechaInicio = p.FechaInicio,
                         Nacional = p.Nacional
                     }),
+                    Responsable = compra.Responsable,
                     Recibida = compra.Recibida,
                     FechaRecepcion=compra.FechaRecepcion
                 };
@@ -165,7 +166,8 @@ namespace MVC.Controllers
                         Compra compra = new Compra()
                         {
                             Fecha = compraViewModel.Fecha,
-                            Proveedor = proveedor
+                            Proveedor = proveedor,
+                            Responsable = HttpContext.Session.GetString("nombre")
                         };
                         CUCreateCompra.CreateCompra(compra);
 
@@ -285,6 +287,7 @@ namespace MVC.Controllers
                         FechaInicio = p.FechaInicio,
                         Nacional = p.Nacional
                     }),
+                    Responsable = compra.Responsable,
                     Recibida = compra.Recibida,
                     FechaRecepcion=compra.FechaRecepcion
                 };

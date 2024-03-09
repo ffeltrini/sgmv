@@ -12,7 +12,7 @@ namespace LogicaNegocio.EntidadesNegocio
         public string Nombre { get; set; }
         public string Contrasenia { get; set; }
         public string Confirmacion { get; set; }
-        public string Rol { get; set; }
+        public TipoRol Rol { get; set; }
         public DateTime Fecha { get; set; }
     }
 }

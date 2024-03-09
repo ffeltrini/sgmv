@@ -5,6 +5,7 @@ using LogicaAplicacion.CasosDeUso.CUAuditoria;
 using LogicaAplicacion.CasosDeUso.CUCompra;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
+using LogicaAplicacion.CasosDeUso.CUTipoRol;
 using LogicaAplicacion.CasosDeUso.CUUsuario;
 using LogicaNegocio.EntidadesNegocio;
 using Microsoft.Data.SqlClient;
@@ -53,7 +54,14 @@ namespace MVC
             builder.Services.AddScoped<ICUGetAllUsuario,CUGetAllUsuario>();
             builder.Services.AddScoped<ICULogin, CULogin>();    
 
+            builder.Services.AddScoped<IRepositorio<TipoRol>,RepositorioTipoRoles>();
+            builder.Services.AddScoped<ICUGetAllTipoRol, CUGetAllTipoRol>();
+            builder.Services.AddScoped<ICUGetByIdTipoRol, CUGetByIdTipoRol>();
+            builder.Services.AddScoped<ICUCreateTipoRol, CUCreateTipoRol>();
+
             builder.Services.AddDbContext<SGMVContext>(Options=>Options.UseSqlServer(cadenaConexion));
+
+            builder.Services.AddSession();
 
             var app = builder.Build();
 
@@ -67,10 +75,11 @@ namespace MVC
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Usuario}/{action=Login}/{id?}");
 
             app.Run();
         }

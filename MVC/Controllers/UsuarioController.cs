@@ -1,4 +1,5 @@
 ﻿using LogicaAccesoDatos.Interfaces;
+using LogicaAplicacion.CasosDeUso.CUTipoRol;
 using LogicaAplicacion.CasosDeUso.CUUsuario;
 using LogicaNegocio.EntidadesNegocio;
 using LogicaNegocio.Excepciones;
@@ -14,12 +15,21 @@ namespace MVC.Controllers
         public ICUGetAllUsuario CUGetAllUsuario { get; set; }
         public ICUCreateUsuario CUCreateUsuario { get; set; }
         public ICULogin CULogin { get; set; }
-        public UsuarioController(IRepositorioUsuarios repositorioUsuarios, ICUGetAllUsuario cUGetAllUsuario, ICUCreateUsuario cUCreateUsuario, ICULogin cULogin)
+        public ICUGetAllTipoRol CUGetAllTipoRol { get; set; }
+        public ICUGetByIdTipoRol CUGetByIdTipoRol { get; set; }
+        public UsuarioController(IRepositorioUsuarios repositorioUsuarios,
+            ICUGetAllUsuario cUGetAllUsuario,
+            ICUCreateUsuario cUCreateUsuario,
+            ICULogin cULogin,
+            ICUGetAllTipoRol cUGetAllTipoRol,
+            ICUGetByIdTipoRol cUGetByIdTipoRol)
         {
             RepositorioUsuarios = repositorioUsuarios;
             CUGetAllUsuario = cUGetAllUsuario;
             CUCreateUsuario = cUCreateUsuario;
             CULogin = cULogin;
+            CUGetAllTipoRol= cUGetAllTipoRol;
+            CUGetByIdTipoRol = cUGetByIdTipoRol;
         }
 
         // GET: UsuarioController
@@ -34,7 +44,12 @@ namespace MVC.Controllers
                     Id = usuario.Id,
                     Nombre = usuario.Nombre,
                     Contrasenia = usuario.Contrasenia,
-                    Rol = usuario.Rol,
+                    RolId = usuario.Rol.Id,
+                    Roles = CUGetAllTipoRol.GetAllTipoRol().Select(r => new TipoRolViewModel()
+                    {
+                        Id=r.Id,
+                        Rol=r.Rol
+                    }),
                     Fecha = usuario.Fecha
                 };
                 listaUsuarioViewModel.Add(usuarioViewModel);
@@ -51,7 +66,13 @@ namespace MVC.Controllers
         // GET: UsuarioController/Create
         public ActionResult Create()
         {
-            return View();
+            UsuarioViewModel usuarioViewModel = new UsuarioViewModel();
+            usuarioViewModel.Roles = CUGetAllTipoRol.GetAllTipoRol().Select(t => new TipoRolViewModel()
+            {
+                Id= t.Id,
+                Rol= t.Rol
+            });
+            return View(usuarioViewModel);
         }
 
         // POST: UsuarioController/Create
@@ -59,6 +80,12 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(UsuarioViewModel usuarioViewModel)
         {
+            UsuarioViewModel usuarioVM = new UsuarioViewModel();
+            usuarioVM.Roles = CUGetAllTipoRol.GetAllTipoRol().Select(t => new TipoRolViewModel()
+            {
+                Id = t.Id,
+                Rol = t.Rol
+            });
             if (ModelState.IsValid)
             {
                 if (usuarioViewModel.Contrasenia != usuarioViewModel.Confirmacion)
@@ -66,15 +93,18 @@ namespace MVC.Controllers
                     ViewData["ErrorMessage"] = "Contraseña y confirmación no coinciden";
                     return View(usuarioViewModel);
                 }
+                
                 try
                 {
+                    TipoRol tipoRol = new TipoRol();
+                    tipoRol = CUGetByIdTipoRol.GetByIdTipoRol(usuarioViewModel.RolId);
                     Usuario usuario = new Usuario()
                     {
                         Nombre = usuarioViewModel.Nombre,
                         Contrasenia = usuarioViewModel.Contrasenia,
                         Confirmacion = usuarioViewModel.Confirmacion,
-                        Rol = usuarioViewModel.Rol,
-                        Fecha = usuarioViewModel.Fecha
+                        Rol = tipoRol,
+                        Fecha = DateTime.Now
                     };
                     CUCreateUsuario.CreateUsuario(usuario);
                     return RedirectToAction(nameof(Index));
@@ -140,16 +170,18 @@ namespace MVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult IniciarSesion(string nombre,string contrasenia)
+        public ActionResult IniciarSesion(string nombre, string contrasenia)
         {
             try
             {
-                if(nombre.Trim()!="" && contrasenia.Trim() != "")
+                if (nombre.Trim() != "" && contrasenia.Trim() != "")
                 {
                     Usuario usuarioBuscado = CULogin.Login(nombre, contrasenia);
+                    //TipoRol tipoRol = new TipoRol();
+                    //tipoRol = CUGetByIdTipoRol.GetByIdTipoRol(usuarioBuscado.Rol.Id);
                     if (usuarioBuscado != null)
                     {
-                        HttpContext.Session.SetString("rol", usuarioBuscado.Rol);
+                        HttpContext.Session.SetString("rol", usuarioBuscado.Rol.Rol);
                         HttpContext.Session.SetString("nombre", usuarioBuscado.Nombre);
                         return RedirectToAction("Index", "Compra");
                     }

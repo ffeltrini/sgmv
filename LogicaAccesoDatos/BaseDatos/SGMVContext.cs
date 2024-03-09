@@ -16,6 +16,7 @@ namespace LogicaAccesoDatos.BaseDatos
         public DbSet<CompraRepuesto> CompraRepuestos { get; set; }
         public DbSet<Auditoria> Auditorias { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<TipoRol> TipoRoles { get; set; }
 
         public SGMVContext(DbContextOptions<SGMVContext> options) : base(options) { }
 

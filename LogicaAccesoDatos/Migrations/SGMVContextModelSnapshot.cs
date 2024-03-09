@@ -72,6 +72,10 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<bool>("Recibida")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Responsable")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProveedorId");
@@ -170,6 +174,23 @@ namespace LogicaAccesoDatos.Migrations
                     b.ToTable("Repuestos");
                 });
 
+            modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.TipoRol", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Rol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoRoles");
+                });
+
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Usuario", b =>
                 {
                     b.Property<int>("Id")
@@ -193,11 +214,12 @@ namespace LogicaAccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Rol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RolId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RolId");
 
                     b.ToTable("Usuarios");
                 });
@@ -263,6 +285,17 @@ namespace LogicaAccesoDatos.Migrations
                     b.HasOne("LogicaNegocio.EntidadesNegocio.Compra", null)
                         .WithMany("ListaRepuestos")
                         .HasForeignKey("CompraId");
+                });
+
+            modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Usuario", b =>
+                {
+                    b.HasOne("LogicaNegocio.EntidadesNegocio.TipoRol", "Rol")
+                        .WithMany()
+                        .HasForeignKey("RolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rol");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Compra", b =>
