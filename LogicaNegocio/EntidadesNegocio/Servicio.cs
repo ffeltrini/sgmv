@@ -11,8 +11,6 @@ namespace LogicaNegocio.EntidadesNegocio
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
         public Vehiculo Vehiculo { get; set; }
-        public TipoServicio Tipo { get; set; }
-        public Trabajo Trabajo { get; set; }
         public int Km { get; set; }
         public TipoEstado Estado { get; set; }
         public IEnumerable<ServicioRepuesto> ListaRepuestos { get; set; }
