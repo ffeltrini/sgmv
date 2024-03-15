@@ -29,7 +29,8 @@ namespace MVC.Controllers
                     NombreUsuario = auditoria.NombreUsuario,
                     FechaHora = auditoria.FechaHora,
                     IdEntidad = auditoria.IdEntidad,
-                    TipoEntidad = auditoria.TipoEntidad
+                    TipoEntidad = auditoria.TipoEntidad,
+                    Operacion = auditoria.Operacion
                 };
                 listaAuditoriaViewModel.Add(auditoriaViewModel);
             }
@@ -62,7 +63,8 @@ namespace MVC.Controllers
                         NombreUsuario = auditoriaViewModel.NombreUsuario,
                         FechaHora = auditoriaViewModel.FechaHora,
                         IdEntidad = auditoriaViewModel.IdEntidad,
-                        TipoEntidad = auditoriaViewModel.TipoEntidad
+                        TipoEntidad = auditoriaViewModel.TipoEntidad,
+                        Operacion = auditoriaViewModel.Operacion
                     };
                     CUCreateAuditoria.CreateAuditoria(auditoria);
                     return RedirectToAction(nameof(Index));

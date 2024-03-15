@@ -13,5 +13,6 @@ namespace LogicaNegocio.EntidadesNegocio
         public DateTime FechaHora { get; set; }
         public int IdEntidad { get; set; }
         public string TipoEntidad { get; set; }
+        public string Operacion { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using LogicaAplicacion.CasosDeUso.CURepuesto;
+﻿using LogicaAplicacion.CasosDeUso.CUAuditoria;
+using LogicaAplicacion.CasosDeUso.CURepuesto;
 using LogicaNegocio.EntidadesNegocio;
 using LogicaNegocio.Excepciones;
 using Microsoft.AspNetCore.Http;
@@ -13,13 +14,19 @@ namespace MVC.Controllers
         public ICUCreateRepuesto CUCreateRepuesto { get; set; }
         public ICUGetByIdRepuesto CUGetByIdRepuesto { get; set; }
         public ICUUpdateRepuesto CUUpdateRepuesto { get; set; }
-        public RepuestoController(ICUGetAllRepuesto cUGetAllRepuesto,ICUCreateRepuesto cUCreateRepuesto,
-            ICUGetByIdRepuesto cUGetByIdRepuesto, ICUUpdateRepuesto cUUpdateRepuesto)
+        public ICUCreateAuditoria CUCreateAuditoria { get; set; }
+        
+        public RepuestoController(ICUGetAllRepuesto cUGetAllRepuesto,
+            ICUCreateRepuesto cUCreateRepuesto,
+            ICUGetByIdRepuesto cUGetByIdRepuesto,
+            ICUUpdateRepuesto cUUpdateRepuesto,
+            ICUCreateAuditoria cUCreateAuditoria)
         {
             CUGetAllRepuesto = cUGetAllRepuesto;
             CUCreateRepuesto = cUCreateRepuesto;
             CUGetByIdRepuesto = cUGetByIdRepuesto;
-            CUUpdateRepuesto = cUUpdateRepuesto;    
+            CUUpdateRepuesto = cUUpdateRepuesto; 
+            CUCreateAuditoria = cUCreateAuditoria;
         }
 
         // GET: RepuestoController
@@ -60,7 +67,7 @@ namespace MVC.Controllers
         // POST: RepuestoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RepuestoViewModel repuestoViewModel)
+        public ActionResult Create(RepuestoViewModel repuestoViewModel,string operacion)
         {
             if (ModelState.IsValid)
             {
@@ -77,6 +84,16 @@ namespace MVC.Controllers
                         Stock = repuestoViewModel.Stock
                     };
                     CUCreateRepuesto.CreateRepuesto(repuesto);
+
+                    Auditoria auditoria = new Auditoria()
+                    {
+                        NombreUsuario = HttpContext.Session.GetString("nombre"),
+                        FechaHora = DateTime.Now,
+                        IdEntidad = repuesto.Id,
+                        TipoEntidad = repuesto.GetType().Name.ToString(),
+                        Operacion = operacion
+                    };
+                    CUCreateAuditoria.CreateAuditoria(auditoria);
                     return RedirectToAction(nameof(Index));
                 }
                 catch(RepuestoException ex)
@@ -126,16 +143,42 @@ namespace MVC.Controllers
         // POST: RepuestoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, RepuestoViewModel repuestoViewModel,string operacion)
         {
             try
             {
+                Repuesto repuesto = new Repuesto()
+                {
+                    Id = repuestoViewModel.Id,
+                    Codigo=repuestoViewModel.Codigo,
+                    Nombre=repuestoViewModel.Nombre,
+                    Descripcion=repuestoViewModel.Descripcion,
+                    Medida=repuestoViewModel.Medida,
+                    Unidad=repuestoViewModel.Unidad,
+                    StockMin=repuestoViewModel.StockMin
+                };
+                CUUpdateRepuesto.UpdateRepuesto(repuesto);
+                Auditoria auditoria = new Auditoria()
+                {
+                    NombreUsuario = HttpContext.Session.GetString("nombre"),
+                    FechaHora = DateTime.Now,
+                    IdEntidad = repuesto.Id,
+                    TipoEntidad = repuesto.GetType().Name.ToString(),
+                    Operacion = operacion
+                };
+                CUCreateAuditoria.CreateAuditoria(auditoria);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(RepuestoException ex)
             {
-                return View();
+                ViewData["ErrorMessage"] = ex.Message;
+                return View(repuestoViewModel);
             }
+            catch(Exception ex)
+            {
+                ViewData["ErrorMessage"] = "Se produjo un error";
+            }
+            return View(repuestoViewModel);
         }
 
         // GET: RepuestoController/Delete/5

@@ -1,4 +1,6 @@
-﻿using LogicaAplicacion.CasosDeUso.CUProveedor;
+﻿using Azure.Core;
+using LogicaAplicacion.CasosDeUso.CUAuditoria;
+using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaNegocio.EntidadesNegocio;
 using LogicaNegocio.Excepciones;
 using LogicaNegocio.ValueObject;
@@ -15,17 +17,20 @@ namespace MVC.Controllers
         public ICUDeleteProveedor CUDeleteProveedor { get; set; }
         public ICUGetByIdProveedor CUGetByIdProveedor { get; set; }
         public ICUUpdateProveedor CUUpdateProveedor { set; get; }
+        public ICUCreateAuditoria CUCreateAuditoria { get; set; }
         public ProveedorController(ICUGetAllProveedor cUGetAllProveedor, 
                                     ICUCreateProveedor cUCreateProveedor,
                                     ICUDeleteProveedor cUDeleteProveedor,
                                     ICUGetByIdProveedor cUGetByIdProveedor,
-                                    ICUUpdateProveedor cUUpdateProveedor) 
+                                    ICUUpdateProveedor cUUpdateProveedor,
+                                    ICUCreateAuditoria cUCreateAuditoria) 
         {
             CUGetAllProveedor= cUGetAllProveedor;
             CUCreateProveedor= cUCreateProveedor;
             CUDeleteProveedor = cUDeleteProveedor;
             CUGetByIdProveedor = cUGetByIdProveedor;
             CUUpdateProveedor = cUUpdateProveedor;
+            CUCreateAuditoria= cUCreateAuditoria;
         }
         // GET: ProveedorController
         public ActionResult Index()
@@ -69,7 +74,7 @@ namespace MVC.Controllers
         // POST: ProveedorController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProveedorViewModel proveedorViewModel)
+        public ActionResult Create(ProveedorViewModel proveedorViewModel,string operacion)
         {
             if (ModelState.IsValid)
             {
@@ -85,11 +90,13 @@ namespace MVC.Controllers
                     CUCreateProveedor.CreateProveedor(proveedor);
                     Auditoria auditoria = new Auditoria()
                     {
-                        NombreUsuario = HttpContext.Session.GetString(""),
+                        NombreUsuario = HttpContext.Session.GetString("nombre"),
                         FechaHora = DateTime.Now,
                         IdEntidad = proveedor.Id,
-                        TipoEntidad = proveedor.GetType().Name.ToString()
+                        TipoEntidad = proveedor.GetType().Name.ToString(),
+                        Operacion = operacion
                     };
+                    CUCreateAuditoria.CreateAuditoria(auditoria);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (ProveedorException ex)
