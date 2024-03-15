@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogicaNegocio.EntidadesNegocio
 {
-    public class TipoEstado
+    public class TipoMantenimiento
     {
         public int Id { get; set; }
-        public string Estado { get; set; }
+        public string NombreMant { get; set; }
     }
 }

@@ -8,7 +8,10 @@ namespace LogicaNegocio.EntidadesNegocio
 {
     public class Mantenimiento
     {
-        public DateTime FechaProxMant { get; set; }
-        public TimeSpan TiempoReal { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public TimeSpan Tiempo { get; set; }
+        public int Frecuencia { get; set; }
     }
 }

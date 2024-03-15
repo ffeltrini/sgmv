@@ -14,7 +14,8 @@ namespace LogicaNegocio.EntidadesNegocio
         public TipoVehiculo Tipo { get; set; }
         public DateTime Anio { get; set; }
         public string Color { get; set; }
-        public string Inspeccion { get; set; }
+        //public int Inspeccion { get; set; }
+        public Aseguradora Seguro { get; set; }
         public string Imagen { get; set; }
 
     }
