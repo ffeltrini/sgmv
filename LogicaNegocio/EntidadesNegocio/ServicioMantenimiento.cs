@@ -13,10 +13,11 @@ namespace LogicaNegocio.EntidadesNegocio
         public int ServicioId { get; set; }
         public int MantenimientoId { get; set; }
         public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public DateTime? FechaFin { get; set; }
         public TipoMantenimiento TipoMantenimiento { get; set; }
         public bool Siniestro { get; set; }
         public string Observaciones { get; set; }
         public DateTime FechaProxMant { get; set; }
+        public Etapa Etapa { get; set; }
     }
 }
