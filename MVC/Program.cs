@@ -6,6 +6,7 @@ using LogicaAplicacion.CasosDeUso.CUCompra;
 using LogicaAplicacion.CasosDeUso.CUMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
+using LogicaAplicacion.CasosDeUso.CUTipoMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUTipoRol;
 using LogicaAplicacion.CasosDeUso.CUUsuario;
 using LogicaNegocio.EntidadesNegocio;
@@ -39,6 +40,10 @@ namespace MVC
             builder.Services.AddScoped<ICUUpdateCompra, CUUpdateCompra>();
             builder.Services.AddScoped<ICUGetByAmountCompra, CUGetByAmountCompra>();
             builder.Services.AddScoped<ICUGetByIdCompra, CUGetByIdCompra>();
+
+            builder.Services.AddScoped<IRepositorio<TipoMantenimiento>, RepositorioTipoMantenimientos>();
+            builder.Services.AddScoped<ICUCreateTipoMantenimiento, CUCreateTipoMantenimiento>();
+            builder.Services.AddScoped<ICUGetAllTipoMantenimiento, CUGetAllTipoMantenimiento>();
 
             builder.Services.AddScoped<IRepositorioRepuestos, RepositorioRepuestos>();
             builder.Services.AddScoped<ICUGetAllRepuesto,CUGetAllRepuesto>();
