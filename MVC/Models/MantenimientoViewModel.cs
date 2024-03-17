@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LogicaNegocio.EntidadesNegocio
+﻿namespace MVC.Models
 {
-    public class Mantenimiento
+    public class MantenimientoViewModel
     {
         public int Id { get; set; }
         public string Tarea { get; set; }

@@ -3,6 +3,7 @@ using LogicaAccesoDatos.Interfaces;
 using LogicaAccesoDatos.Repositorios;
 using LogicaAplicacion.CasosDeUso.CUAuditoria;
 using LogicaAplicacion.CasosDeUso.CUCompra;
+using LogicaAplicacion.CasosDeUso.CUMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
 using LogicaAplicacion.CasosDeUso.CUTipoRol;
@@ -45,19 +46,23 @@ namespace MVC
             builder.Services.AddScoped<ICUGetByIdRepuesto, CUGetByIdRepuesto>();
             builder.Services.AddScoped<ICUUpdateRepuesto, CUUpdateRepuesto>();
 
+            builder.Services.AddScoped<IRepositorioMantenimientos, RepositorioMantenimientos>();
+            builder.Services.AddScoped<ICUGetAllMantenimiento , CUGetAllMantenimiento>();
+            builder.Services.AddScoped<ICUCreateMantenimiento, CUCreateMantenimiento>();
+
             builder.Services.AddScoped<IRepositorio<Auditoria>, RepositorioAuditorias>();
             builder.Services.AddScoped<ICUCreateAuditoria, CUCreateAuditoria>();
             builder.Services.AddScoped<ICUGetAllAuditoria, CUGetAllAuditoria>();
-
-            builder.Services.AddScoped<IRepositorioUsuarios,RepositorioUsuarios>();
-            builder.Services.AddScoped<ICUCreateUsuario, CUCreateUsuario>();
-            builder.Services.AddScoped<ICUGetAllUsuario,CUGetAllUsuario>();
-            builder.Services.AddScoped<ICULogin, CULogin>();    
 
             builder.Services.AddScoped<IRepositorio<TipoRol>,RepositorioTipoRoles>();
             builder.Services.AddScoped<ICUGetAllTipoRol, CUGetAllTipoRol>();
             builder.Services.AddScoped<ICUGetByIdTipoRol, CUGetByIdTipoRol>();
             builder.Services.AddScoped<ICUCreateTipoRol, CUCreateTipoRol>();
+
+            builder.Services.AddScoped<IRepositorioUsuarios, RepositorioUsuarios>();
+            builder.Services.AddScoped<ICUCreateUsuario, CUCreateUsuario>();
+            builder.Services.AddScoped<ICUGetAllUsuario, CUGetAllUsuario>();
+            builder.Services.AddScoped<ICULogin, CULogin>();
 
             builder.Services.AddDbContext<SGMVContext>(Options=>Options.UseSqlServer(cadenaConexion));
 

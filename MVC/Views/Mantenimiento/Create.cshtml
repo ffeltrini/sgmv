@@ -1,0 +1,57 @@
+﻿@model MVC.Models.MantenimientoViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Alta Mantenimiento</h1>
+
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+@*<h4>MantenimientoViewModel</h4>*@
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="Tarea" class="control-label"></label>
+                <input asp-for="Tarea" class="form-control" />
+                <span asp-validation-for="Tarea" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duracion" class="control-label"></label>
+                <input asp-for="Duracion" type="time" class="form-control" />
+                <span asp-validation-for="Duracion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Frecuencia" class="control-label"></label>
+                <input asp-for="Frecuencia" class="form-control" />
+                <span asp-validation-for="Frecuencia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="Operacion" value="Alta" />
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
