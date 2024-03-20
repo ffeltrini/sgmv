@@ -9,6 +9,6 @@ namespace LogicaNegocio.EntidadesNegocio
     public class TipoMantenimiento
     {
         public int Id { get; set; }
-        public string NombreMantenimiento { get; set; }
+        public string Tipo { get; set; }
     }
 }

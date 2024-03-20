@@ -28,7 +28,7 @@ namespace MVC.Controllers
                 TipoMantenimientoViewModel tipoMantenimientoViewModel = new TipoMantenimientoViewModel()
                 {
                     Id = tipoMantenimiento.Id,
-                    NombreMantenimiento = tipoMantenimiento.NombreMantenimiento
+                    Tipo = tipoMantenimiento.Tipo
                 };
                 listaTipoMantenimientoViewModel.Add(tipoMantenimientoViewModel);
             }
@@ -58,7 +58,7 @@ namespace MVC.Controllers
                 {
                     TipoMantenimiento tipoMantenimiento = new TipoMantenimiento()
                     {
-                        NombreMantenimiento=tipoMantenimientoViewModel.NombreMantenimiento
+                        Tipo=tipoMantenimientoViewModel.Tipo
                     };
                     CUCreateTipoMantenimiento.CreateTipoMantenimiento(tipoMantenimiento);
                     return RedirectToAction(nameof(Index));
