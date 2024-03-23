@@ -20,6 +20,7 @@ namespace LogicaAccesoDatos.BaseDatos
         public DbSet<ServicioMantenimiento> ServicioMantenimientos { get; set; }
         public DbSet<Mantenimiento> Mantenimientos { get; set; }
         public DbSet<RepuestoUtilizado> RepuestoUtilizados { get; set; }
+        public DbSet<Vehiculo> Vehiculos { get; set; }
         public DbSet<Auditoria> Auditorias { get; set; }
         public DbSet<TipoRol> TipoRoles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
