@@ -3,6 +3,7 @@ using LogicaAccesoDatos.Interfaces;
 using LogicaAccesoDatos.Repositorios;
 using LogicaAplicacion.CasosDeUso.CUAuditoria;
 using LogicaAplicacion.CasosDeUso.CUCompra;
+using LogicaAplicacion.CasosDeUso.CUEtapa;
 using LogicaAplicacion.CasosDeUso.CUMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
@@ -44,6 +45,10 @@ namespace MVC
             builder.Services.AddScoped<IRepositorio<TipoMantenimiento>, RepositorioTipoMantenimientos>();
             builder.Services.AddScoped<ICUCreateTipoMantenimiento, CUCreateTipoMantenimiento>();
             builder.Services.AddScoped<ICUGetAllTipoMantenimiento, CUGetAllTipoMantenimiento>();
+
+            builder.Services.AddScoped<IRepositorio<Etapa>, RepositorioEtapas>();
+            builder.Services.AddScoped<ICUCreateEtapa, CUCreateEtapa>();
+            builder.Services.AddScoped<ICUGetAllEtapa, CUGetAllEtapa>();
 
             builder.Services.AddScoped<IRepositorioRepuestos, RepositorioRepuestos>();
             builder.Services.AddScoped<ICUGetAllRepuesto,CUGetAllRepuesto>();

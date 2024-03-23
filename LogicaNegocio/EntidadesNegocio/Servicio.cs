@@ -13,6 +13,6 @@ namespace LogicaNegocio.EntidadesNegocio
         public Vehiculo Vehiculo { get; set; }
         public int Km { get; set; }
         public DateTime FechaFin { get; set; }
-        public IEnumerable<ServicioMantenimiento> ListaMantenimientos { get; set; } = new List<ServicioMantenimiento>();
+        public IEnumerable<ServicioMantenimiento> ListaServicoiMantenimiento { get; set; } = new List<ServicioMantenimiento>();
     }
 }

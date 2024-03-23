@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Models;
 
 namespace MVC.Controllers
 {
@@ -20,6 +21,8 @@ namespace MVC.Controllers
         // GET: ServicioController/Create
         public ActionResult Create()
         {
+            //ServicioViewModel servicioViewModel = new ServicioViewModel();
+            //servicioViewModel.Vehiculos
             return View();
         }
 

@@ -17,6 +17,7 @@ namespace LogicaAccesoDatos.BaseDatos
         public DbSet<TipoMantenimiento> TipoMantenimientos { get; set; }
         public DbSet<Etapa> Etapas { get; set; }
         public DbSet<Servicio> Servicios { get; set; }
+        public DbSet<ServicioMantenimiento> ServicioMantenimientos { get; set; }
         public DbSet<Mantenimiento> Mantenimientos { get; set; }
         public DbSet<RepuestoUtilizado> RepuestoUtilizados { get; set; }
         public DbSet<Auditoria> Auditorias { get; set; }
