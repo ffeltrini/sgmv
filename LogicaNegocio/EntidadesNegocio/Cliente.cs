@@ -8,7 +8,7 @@ namespace LogicaNegocio.EntidadesNegocio
 {
     public class Cliente:Usuario
     {
-        public string IdLicencia { get; set; }
+        public string LicenciaId { get; set; }
         public DateTime FechaInicio { get; set; }
         public bool Frecuente { get; set; }
         public string Actividad { get; set; }

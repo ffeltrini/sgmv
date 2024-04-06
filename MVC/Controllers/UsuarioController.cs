@@ -1,4 +1,6 @@
 ﻿using LogicaAccesoDatos.Interfaces;
+using LogicaAplicacion.CasosDeUso.CUCliente;
+using LogicaAplicacion.CasosDeUso.CUEmpleado;
 using LogicaAplicacion.CasosDeUso.CUTipoRol;
 using LogicaAplicacion.CasosDeUso.CUUsuario;
 using LogicaNegocio.EntidadesNegocio;
@@ -17,12 +19,17 @@ namespace MVC.Controllers
         public ICULogin CULogin { get; set; }
         public ICUGetAllTipoRol CUGetAllTipoRol { get; set; }
         public ICUGetByIdTipoRol CUGetByIdTipoRol { get; set; }
+        public ICUCreateCliente CUCreateCliente { get; set; }
+        public ICUCreateEmpleado CUCreateEmpleado { get; set; }
+        
         public UsuarioController(IRepositorioUsuarios repositorioUsuarios,
             ICUGetAllUsuario cUGetAllUsuario,
             ICUCreateUsuario cUCreateUsuario,
             ICULogin cULogin,
             ICUGetAllTipoRol cUGetAllTipoRol,
-            ICUGetByIdTipoRol cUGetByIdTipoRol)
+            ICUGetByIdTipoRol cUGetByIdTipoRol,
+            ICUCreateCliente cUCreateCliente,
+            ICUCreateEmpleado cUCreateEmpleado)
         {
             RepositorioUsuarios = repositorioUsuarios;
             CUGetAllUsuario = cUGetAllUsuario;
@@ -30,6 +37,8 @@ namespace MVC.Controllers
             CULogin = cULogin;
             CUGetAllTipoRol= cUGetAllTipoRol;
             CUGetByIdTipoRol = cUGetByIdTipoRol;
+            CUCreateCliente= cUCreateCliente;
+            CUCreateEmpleado= cUCreateEmpleado;
         }
 
         // GET: UsuarioController
@@ -42,7 +51,11 @@ namespace MVC.Controllers
                 UsuarioViewModel usuarioViewModel = new UsuarioViewModel()
                 {
                     Id = usuario.Id,
+                    Cedula= usuario.Cedula,
                     Nombre = usuario.Nombre,
+                    Apellido= usuario.Apellido,
+                    FechaNacimiento= usuario.FechaNacimiento,
+                    Correo= usuario.Correo,
                     Contrasenia = usuario.Contrasenia,
                     RolId = usuario.Rol.Id,
                     Roles = CUGetAllTipoRol.GetAllTipoRol().Select(r => new TipoRolViewModel()
@@ -50,8 +63,23 @@ namespace MVC.Controllers
                         Id=r.Id,
                         Rol=r.Rol
                     }),
-                    Fecha = usuario.Fecha
                 };
+                // Check if the user is Cliente or Empleado
+                if (usuario is Cliente cliente)
+                {
+                    usuarioViewModel.LicenciaId = cliente.LicenciaId;
+                    usuarioViewModel.FechaInicio = cliente.FechaInicio;
+                    usuarioViewModel.Frecuente = cliente.Frecuente;
+                    usuarioViewModel.Actividad = cliente.Actividad;
+                    usuarioViewModel.Puntos = cliente.Puntos;
+                }
+                else if (usuario is Empleado empleado)
+                {
+                    usuarioViewModel.EmpleadoCargo = empleado.EmpleadoCargo;
+                    usuarioViewModel.FechaIngreso = empleado.FechaIngreso;
+                    usuarioViewModel.Foto = empleado.Foto;
+                    usuarioViewModel.Bono = empleado.Bono;
+                }
                 listaUsuarioViewModel.Add(usuarioViewModel);
             }
             return View(listaUsuarioViewModel);
@@ -98,15 +126,63 @@ namespace MVC.Controllers
                 {
                     TipoRol tipoRol = new TipoRol();
                     tipoRol = CUGetByIdTipoRol.GetByIdTipoRol(usuarioViewModel.RolId);
-                    Usuario usuario = new Usuario()
+                    Usuario usuario;
+                    //Usuario usuario = new Usuario()
+                    //{
+                    //    Cedula= usuarioViewModel.Cedula,
+                    //    Nombre = usuarioViewModel.Nombre,
+                    //    Apellido = usuarioViewModel.Apellido,
+                    //    FechaNacimiento= usuarioViewModel.FechaNacimiento,
+                    //    Correo=usuarioViewModel.Correo,
+                    //    Contrasenia = usuarioViewModel.Contrasenia,
+                    //    Confirmacion = usuarioViewModel.Confirmacion,
+                    //    Rol = tipoRol
+                    //};
+                    //CUCreateUsuario.CreateUsuario(usuario);
+                    if (!string.IsNullOrEmpty(usuarioViewModel.LicenciaId)) // Assuming LicenciaId is a property of Cliente
                     {
-                        Nombre = usuarioViewModel.Nombre,
-                        Contrasenia = usuarioViewModel.Contrasenia,
-                        Confirmacion = usuarioViewModel.Confirmacion,
-                        Rol = tipoRol,
-                        Fecha = DateTime.Now
-                    };
-                    CUCreateUsuario.CreateUsuario(usuario);
+                        Cliente cliente = new Cliente()
+                        {
+                            Cedula = usuarioViewModel.Cedula,
+                            Nombre = usuarioViewModel.Nombre,
+                            Apellido = usuarioViewModel.Apellido,
+                            FechaNacimiento = usuarioViewModel.FechaNacimiento,
+                            Correo = usuarioViewModel.Correo,
+                            Contrasenia = usuarioViewModel.Contrasenia,
+                            Confirmacion = usuarioViewModel.Confirmacion,
+                            Rol = tipoRol,
+                            LicenciaId = usuarioViewModel.LicenciaId,
+                            FechaInicio=usuarioViewModel.FechaInicio,
+                            Frecuente=usuarioViewModel.Frecuente,
+                            Actividad=usuarioViewModel.Actividad,
+                            Puntos=usuarioViewModel.Puntos
+                        };
+
+                        CUCreateCliente.CreateCliente(cliente);
+                        usuario = cliente; // Set usuario to the created Cliente
+                    }
+                    else
+                    {
+                        Empleado empleado = new Empleado()
+                        {
+                            Cedula = usuarioViewModel.Cedula,
+                            Nombre = usuarioViewModel.Nombre,
+                            Apellido = usuarioViewModel.Apellido,
+                            FechaNacimiento = usuarioViewModel.FechaNacimiento,
+                            Correo = usuarioViewModel.Correo,
+                            Contrasenia = usuarioViewModel.Contrasenia,
+                            Confirmacion = usuarioViewModel.Confirmacion,
+                            Rol = tipoRol,
+                            EmpleadoCargo=usuarioViewModel.EmpleadoCargo,
+                            FechaIngreso=usuarioViewModel.FechaIngreso,
+                            Foto=usuarioViewModel.Foto,
+                            Bono=usuarioViewModel.Bono
+                        };
+
+                        CUCreateEmpleado.CreateEmpleado(empleado);
+                        usuario = empleado; // Set usuario to the created Empleado
+                    }
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch(UsuarioException ex)
@@ -170,19 +246,19 @@ namespace MVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult IniciarSesion(string nombre, string contrasenia)
+        public ActionResult IniciarSesion(string cedula, string contrasenia)
         {
             try
             {
-                if (nombre.Trim() != "" && contrasenia.Trim() != "")
+                if (cedula.Trim() != "" && contrasenia.Trim() != "")
                 {
-                    Usuario usuarioBuscado = CULogin.Login(nombre, contrasenia);
+                    Usuario usuarioBuscado = CULogin.Login(cedula, contrasenia);
                     //TipoRol tipoRol = new TipoRol();
                     //tipoRol = CUGetByIdTipoRol.GetByIdTipoRol(usuarioBuscado.Rol.Id);
                     if (usuarioBuscado != null)
                     {
                         HttpContext.Session.SetString("rol", usuarioBuscado.Rol.Rol);
-                        HttpContext.Session.SetString("nombre", usuarioBuscado.Nombre);
+                        HttpContext.Session.SetString("cedula", usuarioBuscado.Cedula);
                         return RedirectToAction("Index", "Compra");
                     }
                     else

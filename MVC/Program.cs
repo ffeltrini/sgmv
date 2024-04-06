@@ -2,7 +2,9 @@ using LogicaAccesoDatos.BaseDatos;
 using LogicaAccesoDatos.Interfaces;
 using LogicaAccesoDatos.Repositorios;
 using LogicaAplicacion.CasosDeUso.CUAuditoria;
+using LogicaAplicacion.CasosDeUso.CUCliente;
 using LogicaAplicacion.CasosDeUso.CUCompra;
+using LogicaAplicacion.CasosDeUso.CUEmpleado;
 using LogicaAplicacion.CasosDeUso.CUEtapa;
 using LogicaAplicacion.CasosDeUso.CUMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
@@ -73,6 +75,9 @@ namespace MVC
             builder.Services.AddScoped<ICUCreateUsuario, CUCreateUsuario>();
             builder.Services.AddScoped<ICUGetAllUsuario, CUGetAllUsuario>();
             builder.Services.AddScoped<ICULogin, CULogin>();
+
+            builder.Services.AddScoped<ICUCreateCliente, CUCreateCliente>();
+            builder.Services.AddScoped<ICUCreateEmpleado, CUCreateEmpleado>();
 
             builder.Services.AddDbContext<SGMVContext>(Options=>Options.UseSqlServer(cadenaConexion));
 

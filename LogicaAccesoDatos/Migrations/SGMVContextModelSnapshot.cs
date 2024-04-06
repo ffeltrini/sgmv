@@ -22,6 +22,8 @@ namespace LogicaAccesoDatos.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.HasSequence("UsuarioSequence");
+
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Aseguradora", b =>
                 {
                     b.Property<int>("Id")
@@ -338,7 +340,7 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.HasIndex("TipoMantenimientoId");
 
-                    b.ToTable("ServicioMantenimiento");
+                    b.ToTable("ServicioMantenimientos");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.TipoMantenimiento", b =>
@@ -414,9 +416,18 @@ namespace LogicaAccesoDatos.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasDefaultValueSql("NEXT VALUE FOR [UsuarioSequence]");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseSequence(b.Property<int>("Id"));
+
+                    b.Property<string>("Apellido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Confirmacion")
                         .IsRequired()
@@ -426,7 +437,11 @@ namespace LogicaAccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Fecha")
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
@@ -440,7 +455,9 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.HasIndex("RolId");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable((string)null);
+
+                    b.UseTpcMappingStrategy();
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Vehiculo", b =>
@@ -481,7 +498,51 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.HasIndex("TipoId");
 
-                    b.ToTable("Vehiculo");
+                    b.ToTable("Vehiculos");
+                });
+
+            modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Cliente", b =>
+                {
+                    b.HasBaseType("LogicaNegocio.EntidadesNegocio.Usuario");
+
+                    b.Property<string>("Actividad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Frecuente")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LicenciaId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Puntos")
+                        .HasColumnType("int");
+
+                    b.ToTable("Clientes", (string)null);
+                });
+
+            modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Empleado", b =>
+                {
+                    b.HasBaseType("LogicaNegocio.EntidadesNegocio.Usuario");
+
+                    b.Property<int?>("Bono")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmpleadoCargo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaIngreso")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Foto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Empleados", (string)null);
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Compra", b =>
@@ -567,7 +628,7 @@ namespace LogicaAccesoDatos.Migrations
                         .IsRequired();
 
                     b.HasOne("LogicaNegocio.EntidadesNegocio.Servicio", null)
-                        .WithMany("ListaMantenimientos")
+                        .WithMany("ListaServicoiMantenimiento")
                         .HasForeignKey("ServicioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -627,7 +688,7 @@ namespace LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Servicio", b =>
                 {
-                    b.Navigation("ListaMantenimientos");
+                    b.Navigation("ListaServicoiMantenimiento");
                 });
 #pragma warning restore 612, 618
         }

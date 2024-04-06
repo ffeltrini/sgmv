@@ -21,7 +21,20 @@ namespace LogicaAccesoDatos.Repositorios
 
         public void Add(Usuario usuario)
         {
-            Contexto.Usuarios.Add(usuario);
+            // Depending on the type of Usuario, add to the respective DbSet
+            if (usuario is Cliente cliente)
+            {
+                Contexto.Clientes.Add(cliente);
+            }
+            else if (usuario is Empleado empleado)
+            {
+                Contexto.Empleados.Add(empleado);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown type of Usuario");
+            }
+
             Contexto.SaveChanges();
         }
 
@@ -42,15 +55,36 @@ namespace LogicaAccesoDatos.Repositorios
 
         public IEnumerable<Usuario> GetAll()
         {
-            return Contexto.Usuarios.Include(t => t.Rol);
+            //return Contexto.Usuarios.Include(t => t.Rol);
+            // Combine results from both Clientes and Empleados
+            var usuarios = new List<Usuario>();
+
+            usuarios.AddRange(Contexto.Clientes.Include(c => c.Rol));
+            usuarios.AddRange(Contexto.Empleados.Include(e => e.Rol));
+
+            return usuarios;
         }
 
-        public Usuario? Login(string nombre, string contrasenia)
+        public Usuario? Login(string cedula, string contrasenia)
         {
-            return Contexto.Usuarios
-                .Include(t=>t.Rol)
-                .Where(u => u.Nombre == nombre && u.Contrasenia == contrasenia)
-                .SingleOrDefault();
+            //return Contexto.Usuarios
+            //    .Include(t=>t.Rol)
+            //    .Where(u => u.Cedula == cedula && u.Contrasenia == contrasenia)
+            //    .SingleOrDefault();
+            // Depending on the type of Usuario, check in the respective DbSet
+            var cliente = Contexto.Clientes.Include(c => c.Rol).FirstOrDefault(c => c.Cedula == cedula && c.Contrasenia == contrasenia);
+            if (cliente != null)
+            {
+                return cliente;
+            }
+
+            var empleado = Contexto.Empleados.Include(e => e.Rol).FirstOrDefault(e => e.Cedula == cedula && e.Contrasenia == contrasenia);
+            if (empleado != null)
+            {
+                return empleado;
+            }
+
+            return null;
         }
     }
 }

@@ -24,9 +24,18 @@ namespace LogicaAccesoDatos.BaseDatos
         public DbSet<Auditoria> Auditorias { get; set; }
         public DbSet<TipoRol> TipoRoles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Empleado> Empleados { get; set; }
 
         public SGMVContext(DbContextOptions<SGMVContext> options) : base(options) { }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+            modelBuilder.Entity<Usuario>().UseTpcMappingStrategy();
+            modelBuilder.Entity<Cliente>().ToTable("Clientes");
+            modelBuilder.Entity<Empleado>().ToTable("Empleados");
+        }
+
     }
 }

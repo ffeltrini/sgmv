@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaAccesoDatos.Interfaces
+namespace LogicaAplicacion.CasosDeUso.CUCliente
 {
-    public interface IRepositorioUsuarios:IRepositorio<Usuario>
+    public interface ICUCreateCliente
     {
-        Usuario Login(string cedula, string contrasenia);
+        void CreateCliente(Cliente cliente);
     }
 }
