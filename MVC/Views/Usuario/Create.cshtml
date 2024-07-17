@@ -6,23 +6,46 @@
 
 <h1>Alta Usuario</h1>
 
-@*<h4>UsuarioViewModel</h4>*@
-<hr />
 @if (ViewData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">
         @ViewData["ErrorMessage"]
     </div>
 }
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cedula" class="control-label"></label>
+                <input asp-for="Cedula" class="form-control" />
+                <span asp-validation-for="Cedula" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaNacimiento" class="control-label"></label>
+                <input asp-for="FechaNacimiento" class="form-control" />
+                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Correo" class="control-label"></label>
+                <input asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Contrasenia" class="control-label"></label>
@@ -36,16 +59,58 @@
             </div>
             <div class="form-group">
                 <label asp-for="RolId" class="control-label"></label>
-                <select asp-for="RolId" asp-items="@Model.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Rol })" class="form-control">
+                <select asp-for="RolId" asp-items="@Model.Roles.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Rol })" class="form-control" id="RolSelect">
                     <option value="">-- Seleccione un rol --</option>
                 </select>
                 <span asp-validation-for="RolId" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="Fecha" class="control-label"></label>
-                <input type="date" id="fechaInput" asp-for="Fecha" class="form-control" readonly />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
-            </div>*@
+            <!-- Campos específicos de Cliente -->
+            <div class="form-group cliente-field">
+                <label asp-for="LicenciaId" class="control-label"></label>
+                <input asp-for="LicenciaId" class="form-control" />
+                <span asp-validation-for="LicenciaId" class="text-danger"></span>
+            </div>
+            <div class="form-group cliente-field">
+                <label asp-for="FechaInicio" class="control-label"></label>
+                <input asp-for="FechaInicio" class="form-control" />
+                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check cliente-field">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Frecuente" /> @Html.DisplayNameFor(model => model.Frecuente)
+                </label>
+            </div>
+            <div class="form-group cliente-field">
+                <label asp-for="Actividad" class="control-label"></label>
+                <input asp-for="Actividad" class="form-control" />
+                <span asp-validation-for="Actividad" class="text-danger"></span>
+            </div>
+            <div class="form-group cliente-field">
+                <label asp-for="Puntos" class="control-label"></label>
+                <input asp-for="Puntos" class="form-control" />
+                <span asp-validation-for="Puntos" class="text-danger"></span>
+            </div>
+            <!-- Campos específicos de Empleado -->
+            <div class="form-group empleado-field">
+                <label asp-for="EmpleadoCargo" class="control-label"></label>
+                <select asp-for="EmpleadoCargo" asp-items="@Model.EmpleadoCargos" class="form-control"></select>
+                <span asp-validation-for="EmpleadoCargo" class="text-danger"></span>
+            </div>
+            <div class="form-group empleado-field">
+                <label asp-for="FechaIngreso" class="control-label"></label>
+                <input asp-for="FechaIngreso" class="form-control" />
+                <span asp-validation-for="FechaIngreso" class="text-danger"></span>
+            </div>
+            <div class="form-group empleado-field">
+                <label asp-for="Foto" class="control-label"></label>
+                <input asp-for="Foto" class="form-control" />
+                <span asp-validation-for="Foto" class="text-danger"></span>
+            </div>
+            <div class="form-group empleado-field">
+                <label asp-for="Bono" class="control-label"></label>
+                <input asp-for="Bono" class="form-control" />
+                <span asp-validation-for="Bono" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Alta" class="btn btn-primary" />
             </div>
@@ -58,15 +123,44 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Get current date and format it as yyyy-mm-dd
             var currentDate = new Date().toISOString().split('T')[0];
-            document.getElementById("fechaInput").value = currentDate;
+            var fechaInput = document.getElementById("fechaInput");
+            if (fechaInput) {
+                fechaInput.value = currentDate;
+            }
 
-            
+            var rolSelect = document.getElementById("RolSelect");
+            var empleadoFields = document.querySelectorAll(".empleado-field");
+            var clienteFields = document.querySelectorAll(".cliente-field");
+
+            function toggleFields() {
+                var selectedRole = rolSelect.value;
+                if (selectedRole == "1") {
+                    empleadoFields.forEach(field => field.style.display = "block");
+                    clienteFields.forEach(field => field.style.display = "none");
+                } else if (selectedRole == "2") {
+                    clienteFields.forEach(field => field.style.display = "block");
+                    empleadoFields.forEach(field => field.style.display = "none");
+                } else {
+                    empleadoFields.forEach(field => field.style.display = "none");
+                    clienteFields.forEach(field => field.style.display = "none");
+                }
+            }
+
+            rolSelect.addEventListener("change", toggleFields);
+            toggleFields();
         });
     </script>
+
+    <style>
+        .empleado-field, .cliente-field {
+            display: none;
+        }
+    </style>
 }

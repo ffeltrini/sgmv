@@ -7,6 +7,7 @@ using LogicaNegocio.EntidadesNegocio;
 using LogicaNegocio.Excepciones;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MVC.Models;
 
 namespace MVC.Controllers
@@ -100,6 +101,14 @@ namespace MVC.Controllers
                 Id= t.Id,
                 Rol= t.Rol
             });
+            usuarioViewModel.EmpleadoCargos = Enum.GetValues(typeof(Empleado.Cargo))
+                                        .Cast<Empleado.Cargo>()
+                                        .Select(c => new SelectListItem
+                                        {
+                                            Value = ((int)c).ToString(),
+                                            Text = c.ToString()
+                                        });
+
             return View(usuarioViewModel);
         }
 
@@ -114,7 +123,7 @@ namespace MVC.Controllers
                 Id = t.Id,
                 Rol = t.Rol
             });
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 if (usuarioViewModel.Contrasenia != usuarioViewModel.Confirmacion)
                 {
@@ -127,18 +136,7 @@ namespace MVC.Controllers
                     TipoRol tipoRol = new TipoRol();
                     tipoRol = CUGetByIdTipoRol.GetByIdTipoRol(usuarioViewModel.RolId);
                     Usuario usuario;
-                    //Usuario usuario = new Usuario()
-                    //{
-                    //    Cedula= usuarioViewModel.Cedula,
-                    //    Nombre = usuarioViewModel.Nombre,
-                    //    Apellido = usuarioViewModel.Apellido,
-                    //    FechaNacimiento= usuarioViewModel.FechaNacimiento,
-                    //    Correo=usuarioViewModel.Correo,
-                    //    Contrasenia = usuarioViewModel.Contrasenia,
-                    //    Confirmacion = usuarioViewModel.Confirmacion,
-                    //    Rol = tipoRol
-                    //};
-                    //CUCreateUsuario.CreateUsuario(usuario);
+                    
                     if (!string.IsNullOrEmpty(usuarioViewModel.LicenciaId)) // Assuming LicenciaId is a property of Cliente
                     {
                         Cliente cliente = new Cliente()

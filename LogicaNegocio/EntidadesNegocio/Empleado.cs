@@ -10,7 +10,7 @@ namespace LogicaNegocio.EntidadesNegocio
     {
         public Cargo EmpleadoCargo { get; set; }
         public DateTime FechaIngreso { get; set; }
-        public string Foto { get; set; }
+        public string? Foto { get; set; }
         public int? Bono { get; set; }
 
         public enum Cargo

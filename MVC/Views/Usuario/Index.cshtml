@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    bool hasLicenciaId = Model.Any(m => !string.IsNullOrEmpty(m.LicenciaId));
 }
 
 <h1>Listado de Usuarios</h1>
@@ -39,6 +40,7 @@
             <th>
                 Rol
             </th>
+            
             
             <th></th>
         </tr>
@@ -81,36 +83,7 @@
                 }
             </td>
 
-            <td>
-                @if (!string.IsNullOrEmpty(item.LicenciaId)) 
-                {
-                    @Html.DisplayFor(modelItem => item.LicenciaId)
-                }
-            </td>
-            <td>
-                @if (!string.IsNullOrEmpty(item.LicenciaId)) 
-                {
-                    @Html.DisplayFor(modelItem => item.FechaInicio)
-                }
-            </td>
-             <td>
-                @if (!string.IsNullOrEmpty(item.LicenciaId)) 
-                {
-                    @Html.DisplayFor(modelItem => item.Frecuente)
-                }
-            </td>
-             <td>
-                @if (!string.IsNullOrEmpty(item.LicenciaId)) 
-                {
-                    @Html.DisplayFor(modelItem => item.Actividad)
-                }
-            </td>
-             <td>
-                @if (!string.IsNullOrEmpty(item.LicenciaId)) 
-                {
-                    @Html.DisplayFor(modelItem => item.Puntos)
-                }
-            </td>
+                
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

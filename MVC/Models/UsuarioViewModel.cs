@@ -1,4 +1,5 @@
 ﻿using LogicaNegocio.EntidadesNegocio;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVC.Models
 {
@@ -27,7 +28,10 @@ namespace MVC.Models
         // Additional properties for Empleado
         public Empleado.Cargo EmpleadoCargo { get; set; }
         public DateTime FechaIngreso { get; set; }
-        public string Foto { get; set; }
+        public string? Foto { get; set; }
         public int? Bono { get; set; }
+
+        // Dropdown items for EmpleadoCargo
+        public IEnumerable<SelectListItem> EmpleadoCargos { get; set; } = new List<SelectListItem>();
     }
 }
