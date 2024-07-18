@@ -17,6 +17,7 @@ namespace LogicaNegocio.EntidadesNegocio
         //public int Inspeccion { get; set; }
         public Aseguradora Seguro { get; set; }
         public string Imagen { get; set; }
+        public Cliente Cliente { get; set; }
 
     }
 }

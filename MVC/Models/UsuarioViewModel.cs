@@ -1,5 +1,6 @@
 ﻿using LogicaNegocio.EntidadesNegocio;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace MVC.Models
 {
@@ -9,7 +10,8 @@ namespace MVC.Models
         public string Cedula { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
-        public DateTime FechaNacimiento { get; set; }
+        [Display(Name = "Fecha de Nacimiento")]
+        public DateTime FechaNacimiento { get; set; } = DateTime.Now.Date;
         public string Correo { get; set; }
         public string Contrasenia { get; set; }
         public string Confirmacion { get; set; }
