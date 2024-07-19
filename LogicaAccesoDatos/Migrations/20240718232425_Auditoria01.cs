@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LogicaAccesoDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class UsuarioHerencia01 : Migration
+    public partial class Auditoria01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,7 +34,9 @@ namespace LogicaAccesoDatos.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Cedula = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NombreUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApellidoUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IdEntidad = table.Column<int>(type: "int", nullable: false),
                     TipoEntidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -218,7 +220,7 @@ namespace LogicaAccesoDatos.Migrations
                     RolId = table.Column<int>(type: "int", nullable: false),
                     EmpleadoCargo = table.Column<int>(type: "int", nullable: false),
                     FechaIngreso = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Foto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Foto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bono = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -228,37 +230,6 @@ namespace LogicaAccesoDatos.Migrations
                         name: "FK_Empleados_TipoRoles_RolId",
                         column: x => x.RolId,
                         principalTable: "TipoRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Vehiculos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Matricula = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdMotor = table.Column<int>(type: "int", nullable: false),
-                    TipoId = table.Column<int>(type: "int", nullable: false),
-                    Anio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeguroId = table.Column<int>(type: "int", nullable: false),
-                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vehiculos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Vehiculos_Aseguradora_SeguroId",
-                        column: x => x.SeguroId,
-                        principalTable: "Aseguradora",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Vehiculos_TipoVehiculo_TipoId",
-                        column: x => x.TipoId,
-                        principalTable: "TipoVehiculo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -289,23 +260,39 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Servicios",
+                name: "Vehiculos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VehiculoId = table.Column<int>(type: "int", nullable: false),
-                    Km = table.Column<int>(type: "int", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Matricula = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdMotor = table.Column<int>(type: "int", nullable: false),
+                    TipoId = table.Column<int>(type: "int", nullable: false),
+                    Anio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SeguroId = table.Column<int>(type: "int", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Servicios", x => x.Id);
+                    table.PrimaryKey("PK_Vehiculos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Servicios_Vehiculos_VehiculoId",
-                        column: x => x.VehiculoId,
-                        principalTable: "Vehiculos",
+                        name: "FK_Vehiculos_Aseguradora_SeguroId",
+                        column: x => x.SeguroId,
+                        principalTable: "Aseguradora",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vehiculos_Clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "Clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vehiculos_TipoVehiculo_TipoId",
+                        column: x => x.TipoId,
+                        principalTable: "TipoVehiculo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -334,6 +321,28 @@ namespace LogicaAccesoDatos.Migrations
                         name: "FK_CompraRepuestos_Repuestos_RepuestoId",
                         column: x => x.RepuestoId,
                         principalTable: "Repuestos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Servicios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VehiculoId = table.Column<int>(type: "int", nullable: false),
+                    Km = table.Column<int>(type: "int", nullable: false),
+                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Servicios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Servicios_Vehiculos_VehiculoId",
+                        column: x => x.VehiculoId,
+                        principalTable: "Vehiculos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -434,6 +443,11 @@ namespace LogicaAccesoDatos.Migrations
                 column: "VehiculoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Vehiculos_ClienteId",
+                table: "Vehiculos",
+                column: "ClienteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vehiculos_SeguroId",
                 table: "Vehiculos",
                 column: "SeguroId");
@@ -449,9 +463,6 @@ namespace LogicaAccesoDatos.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Auditorias");
-
-            migrationBuilder.DropTable(
-                name: "Clientes");
 
             migrationBuilder.DropTable(
                 name: "CompraRepuestos");
@@ -470,9 +481,6 @@ namespace LogicaAccesoDatos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Repuestos");
-
-            migrationBuilder.DropTable(
-                name: "TipoRoles");
 
             migrationBuilder.DropTable(
                 name: "Etapas");
@@ -496,7 +504,13 @@ namespace LogicaAccesoDatos.Migrations
                 name: "Aseguradora");
 
             migrationBuilder.DropTable(
+                name: "Clientes");
+
+            migrationBuilder.DropTable(
                 name: "TipoVehiculo");
+
+            migrationBuilder.DropTable(
+                name: "TipoRoles");
 
             migrationBuilder.DropSequence(
                 name: "UsuarioSequence");

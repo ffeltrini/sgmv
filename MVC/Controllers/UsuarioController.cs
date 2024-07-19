@@ -257,6 +257,8 @@ namespace MVC.Controllers
                     {
                         HttpContext.Session.SetString("rol", usuarioBuscado.Rol.Rol);
                         HttpContext.Session.SetString("cedula", usuarioBuscado.Cedula);
+                        HttpContext.Session.SetString("nombre", usuarioBuscado.Nombre);
+                        HttpContext.Session.SetString("apellido", usuarioBuscado.Apellido);
                         return RedirectToAction("Index", "Compra");
                     }
                     else

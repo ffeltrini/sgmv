@@ -53,6 +53,14 @@ namespace LogicaAccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApellidoUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("FechaHora")
                         .HasColumnType("datetime2");
 
@@ -471,6 +479,9 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<DateTime>("Anio")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -493,6 +504,8 @@ namespace LogicaAccesoDatos.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("SeguroId");
 
@@ -539,7 +552,6 @@ namespace LogicaAccesoDatos.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Foto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Empleados", (string)null);
@@ -657,6 +669,12 @@ namespace LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Vehiculo", b =>
                 {
+                    b.HasOne("LogicaNegocio.EntidadesNegocio.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LogicaNegocio.EntidadesNegocio.Aseguradora", "Seguro")
                         .WithMany()
                         .HasForeignKey("SeguroId")
@@ -668,6 +686,8 @@ namespace LogicaAccesoDatos.Migrations
                         .HasForeignKey("TipoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
 
                     b.Navigation("Seguro");
 

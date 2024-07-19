@@ -90,7 +90,9 @@ namespace MVC.Controllers
                     CUCreateProveedor.CreateProveedor(proveedor);
                     Auditoria auditoria = new Auditoria()
                     {
+                        Cedula = HttpContext.Session.GetString("cedula"),
                         NombreUsuario = HttpContext.Session.GetString("nombre"),
+                        ApellidoUsuario=HttpContext.Session.GetString("apellido"),
                         FechaHora = DateTime.Now,
                         IdEntidad = proveedor.Id,
                         TipoEntidad = proveedor.GetType().Name.ToString(),

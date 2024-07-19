@@ -26,7 +26,9 @@ namespace MVC.Controllers
                 AuditoriaViewModel auditoriaViewModel = new AuditoriaViewModel()
                 {
                     Id = auditoria.Id,
+                    Cedula= auditoria.Cedula,
                     NombreUsuario = auditoria.NombreUsuario,
+                    ApellidoUsuario= auditoria.ApellidoUsuario,
                     FechaHora = auditoria.FechaHora,
                     IdEntidad = auditoria.IdEntidad,
                     TipoEntidad = auditoria.TipoEntidad,
@@ -52,29 +54,16 @@ namespace MVC.Controllers
         // POST: AuditoriaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(AuditoriaViewModel auditoriaViewModel)
+        public ActionResult Create(IFormCollection collection)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    Auditoria auditoria = new Auditoria()
-                    {
-                        NombreUsuario = auditoriaViewModel.NombreUsuario,
-                        FechaHora = auditoriaViewModel.FechaHora,
-                        IdEntidad = auditoriaViewModel.IdEntidad,
-                        TipoEntidad = auditoriaViewModel.TipoEntidad,
-                        Operacion = auditoriaViewModel.Operacion
-                    };
-                    CUCreateAuditoria.CreateAuditoria(auditoria);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch
-                {
-                    return View();
-                }
+                return RedirectToAction(nameof(Index));
             }
-            return View(auditoriaViewModel);
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: AuditoriaController/Edit/5

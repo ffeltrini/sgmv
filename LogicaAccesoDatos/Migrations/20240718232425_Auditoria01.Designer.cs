@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogicaAccesoDatos.Migrations
 {
     [DbContext(typeof(SGMVContext))]
-    [Migration("20240406044542_UsuarioHerencia01")]
-    partial class UsuarioHerencia01
+    [Migration("20240718232425_Auditoria01")]
+    partial class Auditoria01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,14 @@ namespace LogicaAccesoDatos.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApellidoUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaHora")
                         .HasColumnType("datetime2");
@@ -474,6 +482,9 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<DateTime>("Anio")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -496,6 +507,8 @@ namespace LogicaAccesoDatos.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("SeguroId");
 
@@ -542,7 +555,6 @@ namespace LogicaAccesoDatos.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Foto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Empleados", (string)null);
@@ -660,6 +672,12 @@ namespace LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Vehiculo", b =>
                 {
+                    b.HasOne("LogicaNegocio.EntidadesNegocio.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LogicaNegocio.EntidadesNegocio.Aseguradora", "Seguro")
                         .WithMany()
                         .HasForeignKey("SeguroId")
@@ -671,6 +689,8 @@ namespace LogicaAccesoDatos.Migrations
                         .HasForeignKey("TipoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
 
                     b.Navigation("Seguro");
 

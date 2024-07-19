@@ -5,8 +5,10 @@ namespace MVC.Models
     public class AuditoriaViewModel
     {
         public int Id { get; set; }
+        public string Cedula { get; set; }
         [Display(Name = "Usuario")]
         public string NombreUsuario { get; set; }
+        public string ApellidoUsuario { get; set; }
         [Display(Name = "Fecha/Hora")]
         public DateTime FechaHora { get; set; }
         [Display(Name = "Id Entidad")]

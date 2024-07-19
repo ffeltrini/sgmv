@@ -9,7 +9,9 @@ namespace LogicaNegocio.EntidadesNegocio
     public class Auditoria
     {
         public int Id { get; set; }
+        public string Cedula { get; set; } 
         public string NombreUsuario { get; set; }
+        public string ApellidoUsuario { get; set; } 
         public DateTime FechaHora { get; set; }
         public int IdEntidad { get; set; }
         public string TipoEntidad { get; set; }
