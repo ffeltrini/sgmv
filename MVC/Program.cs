@@ -1,6 +1,7 @@
 using LogicaAccesoDatos.BaseDatos;
 using LogicaAccesoDatos.Interfaces;
 using LogicaAccesoDatos.Repositorios;
+using LogicaAplicacion.CasosDeUso.CUAseguradora;
 using LogicaAplicacion.CasosDeUso.CUAuditoria;
 using LogicaAplicacion.CasosDeUso.CUCliente;
 using LogicaAplicacion.CasosDeUso.CUCompra;
@@ -11,7 +12,9 @@ using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
 using LogicaAplicacion.CasosDeUso.CUTipoMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUTipoRol;
+using LogicaAplicacion.CasosDeUso.CUTipoVehiculo;
 using LogicaAplicacion.CasosDeUso.CUUsuario;
+using LogicaAplicacion.CasosDeUso.CUVehiculo;
 using LogicaNegocio.EntidadesNegocio;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -78,6 +81,16 @@ namespace MVC
 
             builder.Services.AddScoped<ICUCreateCliente, CUCreateCliente>();
             builder.Services.AddScoped<ICUCreateEmpleado, CUCreateEmpleado>();
+
+            builder.Services.AddScoped<IRepositorio<TipoVehiculo>, RepositorioTipoVehiculos>();
+            builder.Services.AddScoped<ICUGetAllTipoVehiculo, CUGetAllTipoVehiculo>();
+            
+            builder.Services.AddScoped<IRepositorio<Aseguradora>,RepositorioAseguradoras>();
+            builder.Services.AddScoped<ICUGetAllAseguradora, CUGetAllAseguradora>();
+
+            builder.Services.AddScoped<IRepositorioVehiculos, RepositorioVehiculos>();
+            builder.Services.AddScoped<ICUGetAllVehiculo, CUGetAllVehiculo>();
+            builder.Services.AddScoped<ICUCreateVehiculo,CUCreateVehiculo>();
 
             builder.Services.AddDbContext<SGMVContext>(Options=>Options.UseSqlServer(cadenaConexion));
 

@@ -26,6 +26,8 @@ namespace LogicaAccesoDatos.BaseDatos
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Empleado> Empleados { get; set; }
+        public DbSet<TipoVehiculo> TipoVehiculos { get; set; }
+        public DbSet<Aseguradora> Aseguradoras { get; set; }
 
         public SGMVContext(DbContextOptions<SGMVContext> options) : base(options) { }
 

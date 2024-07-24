@@ -136,20 +136,20 @@
             }
 
             var rolSelect = document.getElementById("RolSelect");
-            var empleadoFields = document.querySelectorAll(".empleado-field");
             var clienteFields = document.querySelectorAll(".cliente-field");
+            var empleadoFields = document.querySelectorAll(".empleado-field");
 
             function toggleFields() {
                 var selectedRole = rolSelect.value;
                 if (selectedRole == "1") {
-                    empleadoFields.forEach(field => field.style.display = "block");
-                    clienteFields.forEach(field => field.style.display = "none");
-                } else if (selectedRole == "2") {
                     clienteFields.forEach(field => field.style.display = "block");
                     empleadoFields.forEach(field => field.style.display = "none");
-                } else {
-                    empleadoFields.forEach(field => field.style.display = "none");
+                } else if (selectedRole == "2") {
+                    empleadoFields.forEach(field => field.style.display = "block");
                     clienteFields.forEach(field => field.style.display = "none");
+                } else {
+                    clienteFields.forEach(field => field.style.display = "none");
+                    empleadoFields.forEach(field => field.style.display = "none");
                 }
             }
 

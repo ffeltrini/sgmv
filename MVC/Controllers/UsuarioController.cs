@@ -45,7 +45,7 @@ namespace MVC.Controllers
         // GET: UsuarioController
         public ActionResult Index()
         {
-            IEnumerable<Usuario> listaUsuarios = CUGetAllUsuario.GetAllUsuarios();
+            IEnumerable<Usuario> listaUsuarios = CUGetAllUsuario.GetAllUsuarios().OrderBy(u=>u.Id).ToList();
             List<UsuarioViewModel> listaUsuarioViewModel  = new List<UsuarioViewModel>();
             foreach(var usuario in listaUsuarios)
             {
@@ -123,7 +123,7 @@ namespace MVC.Controllers
                 Id = t.Id,
                 Rol = t.Rol
             });
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (usuarioViewModel.Contrasenia != usuarioViewModel.Confirmacion)
                 {
