@@ -1,6 +1,7 @@
 ﻿using LogicaAccesoDatos.BaseDatos;
 using LogicaAccesoDatos.Interfaces;
 using LogicaNegocio.EntidadesNegocio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,11 @@ namespace LogicaAccesoDatos.Repositorios
 
         public IEnumerable<Vehiculo> GetAll()
         {
-            return Contexto.Vehiculos;
+            return Contexto.Vehiculos
+                .Include(v=>v.Tipo)
+                .Include(v=>v.Seguro)
+                .Include(v=>v.Cliente)
+                .ToList();
         }
     }
 }

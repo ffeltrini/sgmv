@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogicaAccesoDatos.Migrations
 {
     [DbContext(typeof(SGMVContext))]
-    [Migration("20240718232425_Auditoria01")]
-    partial class Auditoria01
+    [Migration("20240725035023_Vehiculo01")]
+    partial class Vehiculo01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Aseguradora");
+                    b.ToTable("Aseguradoras");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Auditoria", b =>
@@ -420,7 +420,7 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoVehiculo");
+                    b.ToTable("TipoVehiculos");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Usuario", b =>

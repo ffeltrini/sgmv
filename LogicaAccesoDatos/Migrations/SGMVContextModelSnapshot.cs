@@ -42,7 +42,7 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Aseguradora");
+                    b.ToTable("Aseguradoras");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Auditoria", b =>
@@ -417,7 +417,7 @@ namespace LogicaAccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoVehiculo");
+                    b.ToTable("TipoVehiculos");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Usuario", b =>

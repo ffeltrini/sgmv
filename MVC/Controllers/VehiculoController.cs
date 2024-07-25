@@ -62,8 +62,9 @@ namespace MVC.Controllers
                         Cedula= c.Cedula
                     })
                 };
+                listaVehiculoViewModel.Add(vehiculoViewModel);
             }
-            return View();
+            return View(listaVehiculoViewModel);
         }
 
         // GET: VehiculoController/Details/5

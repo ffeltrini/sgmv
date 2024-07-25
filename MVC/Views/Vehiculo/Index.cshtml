@@ -73,15 +73,29 @@
                     }
                 }
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AseguradoraId)
-            </td>
+                <td>
+                    @if (item.AseguradoraId != null)
+                    {
+                        var aseguradora = item.Aseguradoras.FirstOrDefault(t => t.Id == item.AseguradoraId);
+                        if (aseguradora != null)
+                        {
+                            @aseguradora.Nombre
+                        }
+                    }
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Imagen)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UsuarioId)
-            </td>
+    <td>
+                    @if (item.UsuarioId != null)
+                    {
+                        var usuario = item.Clientes.FirstOrDefault(t => t.Id == item.UsuarioId);
+                        if (usuario != null)
+                        {
+                            @usuario.Cedula
+                        }
+                    }
+                </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LogicaAccesoDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class Auditoria01 : Migration
+    public partial class Vehiculo01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace LogicaAccesoDatos.Migrations
                 name: "UsuarioSequence");
 
             migrationBuilder.CreateTable(
-                name: "Aseguradora",
+                name: "Aseguradoras",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -25,7 +25,7 @@ namespace LogicaAccesoDatos.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Aseguradora", x => x.Id);
+                    table.PrimaryKey("PK_Aseguradoras", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -134,7 +134,7 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TipoVehiculo",
+                name: "TipoVehiculos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -148,7 +148,7 @@ namespace LogicaAccesoDatos.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoVehiculo", x => x.Id);
+                    table.PrimaryKey("PK_TipoVehiculos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -267,9 +267,9 @@ namespace LogicaAccesoDatos.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Matricula = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdMotor = table.Column<int>(type: "int", nullable: false),
-                    TipoId = table.Column<int>(type: "int", nullable: false),
                     Anio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoId = table.Column<int>(type: "int", nullable: false),
                     SeguroId = table.Column<int>(type: "int", nullable: false),
                     Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ClienteId = table.Column<int>(type: "int", nullable: false)
@@ -278,9 +278,9 @@ namespace LogicaAccesoDatos.Migrations
                 {
                     table.PrimaryKey("PK_Vehiculos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vehiculos_Aseguradora_SeguroId",
+                        name: "FK_Vehiculos_Aseguradoras_SeguroId",
                         column: x => x.SeguroId,
-                        principalTable: "Aseguradora",
+                        principalTable: "Aseguradoras",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -290,9 +290,9 @@ namespace LogicaAccesoDatos.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Vehiculos_TipoVehiculo_TipoId",
+                        name: "FK_Vehiculos_TipoVehiculos_TipoId",
                         column: x => x.TipoId,
-                        principalTable: "TipoVehiculo",
+                        principalTable: "TipoVehiculos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -501,13 +501,13 @@ namespace LogicaAccesoDatos.Migrations
                 name: "Proveedores");
 
             migrationBuilder.DropTable(
-                name: "Aseguradora");
+                name: "Aseguradoras");
 
             migrationBuilder.DropTable(
                 name: "Clientes");
 
             migrationBuilder.DropTable(
-                name: "TipoVehiculo");
+                name: "TipoVehiculos");
 
             migrationBuilder.DropTable(
                 name: "TipoRoles");
