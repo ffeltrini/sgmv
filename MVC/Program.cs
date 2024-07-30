@@ -79,14 +79,20 @@ namespace MVC
             builder.Services.AddScoped<ICUGetAllUsuario, CUGetAllUsuario>();
             builder.Services.AddScoped<ICULogin, CULogin>();
 
+            builder.Services.AddScoped<IRepositorio<Cliente>, RepositorioClientes>();
+            builder.Services.AddScoped<ICUGetAllCliente, CUGetAllCliente>();
+            builder.Services.AddScoped<ICUGetByIdCliente, CUGetByIdCliente>();
+
             builder.Services.AddScoped<ICUCreateCliente, CUCreateCliente>();
             builder.Services.AddScoped<ICUCreateEmpleado, CUCreateEmpleado>();
 
             builder.Services.AddScoped<IRepositorio<TipoVehiculo>, RepositorioTipoVehiculos>();
             builder.Services.AddScoped<ICUGetAllTipoVehiculo, CUGetAllTipoVehiculo>();
+            builder.Services.AddScoped<ICUGetByIdTipoVehiculo, CUGetByIdTipoVehiculo>();
             
             builder.Services.AddScoped<IRepositorio<Aseguradora>,RepositorioAseguradoras>();
             builder.Services.AddScoped<ICUGetAllAseguradora, CUGetAllAseguradora>();
+            builder.Services.AddScoped<ICUGetByIdAseguradora,CUGetByIdAseguradora>();
 
             builder.Services.AddScoped<IRepositorioVehiculos, RepositorioVehiculos>();
             builder.Services.AddScoped<ICUGetAllVehiculo, CUGetAllVehiculo>();

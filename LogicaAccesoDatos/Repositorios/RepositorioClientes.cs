@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace LogicaAccesoDatos.Repositorios
 {
-    public class RepositorioTipoVehiculos : IRepositorio<TipoVehiculo>
+    public class RepositorioClientes:IRepositorio<Cliente>
     {
         public SGMVContext Contexto { get; set; }
-        public RepositorioTipoVehiculos( SGMVContext contexto )
+        public RepositorioClientes(SGMVContext contexto) 
         {
             Contexto = contexto;
         }
-        public void Add(TipoVehiculo item)
+
+        public void Add(Cliente item)
         {
             throw new NotImplementedException();
         }
@@ -26,17 +27,17 @@ namespace LogicaAccesoDatos.Repositorios
             throw new NotImplementedException();
         }
 
-        public IEnumerable<TipoVehiculo> GetAll()
+        public IEnumerable<Cliente> GetAll()
         {
-            return Contexto.TipoVehiculos;
+            return Contexto.Clientes;
         }
 
-        public TipoVehiculo? GetById(int id)
+        public Cliente? GetById(int id)
         {
-            return Contexto.TipoVehiculos.FirstOrDefault(x => x.Id == id);
+            return Contexto.Clientes.Find(id);
         }
 
-        public void Update(TipoVehiculo item)
+        public void Update(Cliente item)
         {
             throw new NotImplementedException();
         }

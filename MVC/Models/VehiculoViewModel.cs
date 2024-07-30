@@ -15,12 +15,13 @@ namespace MVC.Models
         
         public int AseguradoraId { get; set; }
         public string Imagen { get; set; }
+        public IFormFile ImagenFile { get; set; }
         public int UsuarioId { get; set; }
 
-        public IEnumerable<TipoVehiculoViewModel> TipoVehiculos { get; set; } = new List<TipoVehiculoViewModel>();
+        public IEnumerable<TipoVehiculoViewModel>? TipoVehiculos { get; set; } = new List<TipoVehiculoViewModel>();
 
-        public IEnumerable<AseguradoraViewModel> Aseguradoras { get; set; } = new List<AseguradoraViewModel>();
-        public IEnumerable<UsuarioViewModel> Clientes { get; set; } = new List<UsuarioViewModel>();
+        public IEnumerable<AseguradoraViewModel>? Aseguradoras { get; set; } = new List<AseguradoraViewModel>();
+        public IEnumerable<UsuarioViewModel>? Usuarios { get; set; } = new List<UsuarioViewModel>();
 
     }
 }

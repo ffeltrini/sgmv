@@ -60,9 +60,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Color)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.TipoVehiculoId)
-            </td>*@
             <td>
                 @if (item.TipoVehiculoId != null)
                 {
@@ -84,12 +81,12 @@
                     }
                 </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Imagen)
+                    <img src="~/img/vehiculos/@item.Imagen" alt="Vehiculo Image" class="fixed-size-image" />
             </td>
-    <td>
+            <td>
                     @if (item.UsuarioId != null)
                     {
-                        var usuario = item.Clientes.FirstOrDefault(t => t.Id == item.UsuarioId);
+                        var usuario = item.Usuarios.FirstOrDefault(t => t.Id == item.UsuarioId);
                         if (usuario != null)
                         {
                             @usuario.Cedula
@@ -105,3 +102,12 @@
 }
     </tbody>
 </table>
+
+<style>
+    .fixed-size-image {
+        width: 50px; /* Ancho deseado */
+        height: 50px; /* Alto deseado */
+        object-fit: cover; /* Para ajustar la imagen dentro del contenedor manteniendo la proporción */
+    }
+</style>
+

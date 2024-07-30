@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace LogicaAplicacion.CasosDeUso.CUAseguradora
 {
-    public class CUGetAllAseguradora : ICUGetAllAseguradora
+    public class CUGetByIdAseguradora : ICUGetByIdAseguradora
     {
         public IRepositorio<Aseguradora> RepositorioAseguradoras { get; set; }
-        public CUGetAllAseguradora(IRepositorio<Aseguradora> repositorioAseguradoras)
+        public CUGetByIdAseguradora(IRepositorio<Aseguradora> repositorioAseguradoras)
         {
             RepositorioAseguradoras = repositorioAseguradoras;
         }
 
-        public IEnumerable<Aseguradora> GetAllAseguradora()
+        public Aseguradora? GetByIdAseguradora(int id)
         {
-            return RepositorioAseguradoras.GetAll();
+            return RepositorioAseguradoras.GetById(id);
         }
     }
 }

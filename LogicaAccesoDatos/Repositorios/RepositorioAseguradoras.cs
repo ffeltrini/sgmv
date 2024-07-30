@@ -31,9 +31,9 @@ namespace LogicaAccesoDatos.Repositorios
             return Contexto.Aseguradoras;
         }
 
-        public Aseguradora GetById(int id)
+        public Aseguradora? GetById(int id)
         {
-            throw new NotImplementedException();
+            return Contexto.Aseguradoras.FirstOrDefault(a => a.Id == id);
         }
 
         public void Update(Aseguradora item)

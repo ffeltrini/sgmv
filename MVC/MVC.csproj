@@ -24,6 +24,7 @@
     <Folder Include="Views\Cliente\" />
     <Folder Include="Views\Empleado\" />
     <Folder Include="Views\Servicio\" />
+    <Folder Include="wwwroot\img\vehiculos\" />
     <Folder Include="wwwroot\img\repuestos\" />
   </ItemGroup>
 
