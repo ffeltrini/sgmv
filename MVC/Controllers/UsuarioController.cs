@@ -1,4 +1,5 @@
 ﻿using LogicaAccesoDatos.Interfaces;
+using LogicaAplicacion.CasosDeUso.CUAuditoria;
 using LogicaAplicacion.CasosDeUso.CUCliente;
 using LogicaAplicacion.CasosDeUso.CUEmpleado;
 using LogicaAplicacion.CasosDeUso.CUTipoRol;
@@ -22,6 +23,7 @@ namespace MVC.Controllers
         public ICUGetByIdTipoRol CUGetByIdTipoRol { get; set; }
         public ICUCreateCliente CUCreateCliente { get; set; }
         public ICUCreateEmpleado CUCreateEmpleado { get; set; }
+        public ICUCreateAuditoria CUCreateAuditoria { get; set; }
         
         public UsuarioController(IRepositorioUsuarios repositorioUsuarios,
             ICUGetAllUsuario cUGetAllUsuario,
@@ -30,7 +32,8 @@ namespace MVC.Controllers
             ICUGetAllTipoRol cUGetAllTipoRol,
             ICUGetByIdTipoRol cUGetByIdTipoRol,
             ICUCreateCliente cUCreateCliente,
-            ICUCreateEmpleado cUCreateEmpleado)
+            ICUCreateEmpleado cUCreateEmpleado,
+            ICUCreateAuditoria cUCreateAuditoria)
         {
             RepositorioUsuarios = repositorioUsuarios;
             CUGetAllUsuario = cUGetAllUsuario;
@@ -40,6 +43,7 @@ namespace MVC.Controllers
             CUGetByIdTipoRol = cUGetByIdTipoRol;
             CUCreateCliente= cUCreateCliente;
             CUCreateEmpleado= cUCreateEmpleado;
+            CUCreateAuditoria= cUCreateAuditoria;
         }
 
         // GET: UsuarioController
@@ -115,7 +119,7 @@ namespace MVC.Controllers
         // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(UsuarioViewModel usuarioViewModel)
+        public ActionResult Create(UsuarioViewModel usuarioViewModel, string operacion)
         {
             UsuarioViewModel usuarioVM = new UsuarioViewModel();
             usuarioVM.Roles = CUGetAllTipoRol.GetAllTipoRol().Select(t => new TipoRolViewModel()
@@ -123,7 +127,7 @@ namespace MVC.Controllers
                 Id = t.Id,
                 Rol = t.Rol
             });
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 if (usuarioViewModel.Contrasenia != usuarioViewModel.Confirmacion)
                 {
@@ -180,7 +184,17 @@ namespace MVC.Controllers
                         CUCreateEmpleado.CreateEmpleado(empleado);
                         usuario = empleado; // Set usuario to the created Empleado
                     }
-
+                    Auditoria auditoria = new Auditoria()
+                    {
+                        Cedula = HttpContext.Session.GetString("cedula"),
+                        NombreUsuario = HttpContext.Session.GetString("nombre"),
+                        ApellidoUsuario = HttpContext.Session.GetString("apellido"),
+                        FechaHora = DateTime.Now,
+                        IdEntidad = usuario.Id,
+                        TipoEntidad = usuario.GetType().Name.ToString(),
+                        Operacion = operacion
+                    };
+                    CUCreateAuditoria.CreateAuditoria(auditoria);
                     return RedirectToAction(nameof(Index));
                 }
                 catch(UsuarioException ex)
