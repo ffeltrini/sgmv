@@ -34,9 +34,13 @@ namespace LogicaAccesoDatos.Repositorios
             throw new NotImplementedException();
         }
 
-        public Vehiculo GetById(int id)
+        public Vehiculo? GetById(int id)
         {
-            throw new NotImplementedException();
+            return Contexto.Vehiculos
+                .Include(v => v.Tipo)
+                .Include(v => v.Seguro)
+                .Include(v => v.Cliente)
+                .FirstOrDefault(v=>v.Id == id);
         }
 
         public IEnumerable<Vehiculo> GetAll()

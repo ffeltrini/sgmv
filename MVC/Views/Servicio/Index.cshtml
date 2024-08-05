@@ -1,0 +1,159 @@
+﻿@model IEnumerable<MVC.Models.ServicioViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        table th,
+        table td {
+            padding: 8px;
+            /*border: 1px solid #ddd;*/
+        }
+
+            /* Set fixed widths for each column */
+            table th:nth-child(1),
+            table td:nth-child(1) {
+                width: 200px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(2),
+            table td:nth-child(2) {
+                width: 200px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(3),
+            table td:nth-child(3) {
+                width: 265px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(4),
+            table td:nth-child(4) {
+                width: 50px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(5),
+            table td:nth-child(5) {
+                width: 50px; /* Adjust the width as needed */
+            }
+
+            table th:nth-child(6),
+            table td:nth-child(6) {
+                width: 50px; /* Adjust the width as needed */
+            }
+</style>
+
+<h1>Listado de Servicios</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Alta Servicio</a>
+   
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                Vehículo
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Km)
+            </th>
+            
+            <th>
+                Mantenimientos
+            </th>
+            @*<th>
+            Acciones
+            </th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var servicio in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => servicio.Id)
+                </td>
+                <td>
+                    @servicio.Fecha.ToShortDateString()
+                </td>
+                <td>
+                    @if (servicio.VehiculoId != null)
+                    {
+                        var vehiculo = servicio.Vehiculos.FirstOrDefault(v => v.Id == servicio.VehiculoId);
+                        if (vehiculo != null)
+                        {
+                            @vehiculo.Matricula
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => servicio.Km)
+                </td>
+                <td>
+                    <label class="form-switch">
+                        <input onclick="toggleSection(this)" type="checkbox" class="form-switch-input toggle-mantenimientos-details">
+                        <span class="form-switch-slider"></span>
+                    </label>
+                </td>
+                
+                
+            </tr>
+            @if (ViewData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @ViewData["ErrorMessage"]
+                </div>
+            }
+            <!-- Repuestos details header -->
+            <tr class="section-mantenimientos" style="display: none;">
+                <th style="background-color: #5d6161; color:#FFFFFF;">Mantenimiento</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Siniestro</th>
+                
+                <section>
+                    @foreach (var mantenimiento in servicio.ListaServicioMantenimiento)
+                    {
+                        <tr class="section-mantenimientos" style="display: none; background-color: #BFC9CA;">
+                        <td>@mantenimiento.Mantenimiento.Tarea</td>
+                        <td>@mantenimiento.Siniestro ? "Sí" : "No"</td>
+                        </tr>
+                    }
+                </section>
+
+            <tr class="section-mantenimientos" style="display: none;">
+                    @*<td colspan="2"></td>*@
+                
+            </tr>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        function toggleSection(checkbox) {
+            $(checkbox).closest('tr').nextUntil(':not(.section-mantenimientos)').toggle();
+        }
+
+        
+    </script>
+}
+
+
+
+
+
+
+
+

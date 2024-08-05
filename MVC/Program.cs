@@ -10,6 +10,7 @@ using LogicaAplicacion.CasosDeUso.CUEtapa;
 using LogicaAplicacion.CasosDeUso.CUMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
+using LogicaAplicacion.CasosDeUso.CUServicio;
 using LogicaAplicacion.CasosDeUso.CUTipoMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUTipoRol;
 using LogicaAplicacion.CasosDeUso.CUTipoVehiculo;
@@ -61,6 +62,12 @@ namespace MVC
             builder.Services.AddScoped<ICUGetByIdRepuesto, CUGetByIdRepuesto>();
             builder.Services.AddScoped<ICUUpdateRepuesto, CUUpdateRepuesto>();
 
+            builder.Services.AddScoped<IRepositorioServicios, RepositorioServicios>();
+            builder.Services.AddScoped<ICUGetAllServicio, CUGetAllServicio>();
+            builder.Services.AddScoped<ICUCreateServicio, CUCreateServicio>();
+            builder.Services.AddScoped<ICUUpdateServicio, CUUpdateServicio>();
+            builder.Services.AddScoped<ICUGetByIdServicio, CUGetByIdServicio>();    
+
             builder.Services.AddScoped<IRepositorioMantenimientos, RepositorioMantenimientos>();
             builder.Services.AddScoped<ICUGetAllMantenimiento , CUGetAllMantenimiento>();
             builder.Services.AddScoped<ICUCreateMantenimiento, CUCreateMantenimiento>();
@@ -77,13 +84,13 @@ namespace MVC
             builder.Services.AddScoped<IRepositorioUsuarios, RepositorioUsuarios>();
             builder.Services.AddScoped<ICUCreateUsuario, CUCreateUsuario>();
             builder.Services.AddScoped<ICUGetAllUsuario, CUGetAllUsuario>();
-            builder.Services.AddScoped<ICULogin, CULogin>();
+            
 
             builder.Services.AddScoped<IRepositorio<Cliente>, RepositorioClientes>();
             builder.Services.AddScoped<ICUGetAllCliente, CUGetAllCliente>();
             builder.Services.AddScoped<ICUGetByIdCliente, CUGetByIdCliente>();
-
             builder.Services.AddScoped<ICUCreateCliente, CUCreateCliente>();
+
             builder.Services.AddScoped<ICUCreateEmpleado, CUCreateEmpleado>();
 
             builder.Services.AddScoped<IRepositorio<TipoVehiculo>, RepositorioTipoVehiculos>();
@@ -97,6 +104,9 @@ namespace MVC
             builder.Services.AddScoped<IRepositorioVehiculos, RepositorioVehiculos>();
             builder.Services.AddScoped<ICUGetAllVehiculo, CUGetAllVehiculo>();
             builder.Services.AddScoped<ICUCreateVehiculo,CUCreateVehiculo>();
+            builder.Services.AddScoped<ICUGetByIdVehiculo, CUGetByIdVehiculo>();
+
+            builder.Services.AddScoped<ICULogin, CULogin>();
 
             builder.Services.AddDbContext<SGMVContext>(Options=>Options.UseSqlServer(cadenaConexion));
 

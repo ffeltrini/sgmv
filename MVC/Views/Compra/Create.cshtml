@@ -65,39 +65,45 @@
 
             // Add labels for Repuesto, Cantidad, and Precio outside the loop
             var labelRow = document.createElement("tr");
-            
 
             // Handle click event for the "Add Repuesto" button
             document.getElementById("btnAddRepuesto").addEventListener("click", function () {
                 var newRow = document.createElement("tr");
-                if(repuestoIndex<1)
-                {
-                    labelRow.innerHTML = `<td><label for="repuesto" class="control-label">Repuesto</label></td>
-                                                          <td><label for="cantidad" class="control-label">Cantidad</label></td>
-                                                          <td><label for="precio" class="control-label">Precio</label></td>`;
-                    document.getElementById("repuestosTableBody").appendChild(labelRow);
 
+                if (repuestoIndex < 1) {
+                    labelRow.innerHTML = `<td><label for="repuesto" class="control-label">Repuesto</label></td>
+                                          <td><label for="cantidad" class="control-label">Cantidad</label></td>
+                                          <td><label for="precio" class="control-label">Precio</label></td>
+                                          <td></td>`;  // Empty cell for delete button
+                    document.getElementById("repuestosTableBody").appendChild(labelRow);
                 }
-                
+
                 newRow.innerHTML = `<td>
-                                            <select name="RepuestosId[${repuestoIndex}]" class="form-control">
-                                                @foreach (var repuesto in Model.Repuestos)
-                                                {
-                                                      <option value="@repuesto.Id">@repuesto.Nombre</option>
-                                                }
-                                            </select>
-                                             </td>
-                                             <td>
-                                                         <input type="number" name="Cantidad[${repuestoIndex}]" class="form-control" value="1" />
-                                             </td>
-                                             <td>
-                                                         <input type="number" name="Precio[${repuestoIndex}]" class="form-control" value="0.00" step="0.01" />
-                                             </td>`;
+                                        <select name="RepuestosId[${repuestoIndex}]" class="form-control">
+                                            @foreach (var repuesto in Model.Repuestos)
+                                            {
+                                                <option value="@repuesto.Id">@repuesto.Nombre</option>
+                                            }
+                                        </select>
+                                     </td>
+                                     <td>
+                                        <input type="number" name="Cantidad[${repuestoIndex}]" class="form-control" value="1" />
+                                     </td>
+                                     <td>
+                                        <input type="number" name="Precio[${repuestoIndex}]" class="form-control" value="0.00" step="0.01" />
+                                     </td>
+                                     <td>
+                                        <button type="button" class="btn btn-danger remove-repuesto">Eliminar</button>
+                                     </td>`;
                 document.getElementById("repuestosTableBody").appendChild(newRow);
+
+                // Add event listener to the new remove button
+                newRow.querySelector('.remove-repuesto').addEventListener('click', function () {
+                    newRow.remove();
+                });
 
                 repuestoIndex++;
             });
         });
     </script>
 }
-

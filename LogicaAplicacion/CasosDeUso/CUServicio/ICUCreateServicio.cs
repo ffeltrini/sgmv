@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace LogicaAplicacion.CasosDeUso.CUServicio
 {
-    public interface ICUGetAllServicio
+    public interface ICUCreateServicio
     {
-        IEnumerable<Servicio> GetAllServicio();
+        void CreateServicio(Servicio servicio);
     }
 }

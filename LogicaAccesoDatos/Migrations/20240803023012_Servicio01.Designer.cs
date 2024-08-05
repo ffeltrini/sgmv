@@ -4,6 +4,7 @@ using LogicaAccesoDatos.BaseDatos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogicaAccesoDatos.Migrations
 {
     [DbContext(typeof(SGMVContext))]
-    partial class SGMVContextModelSnapshot : ModelSnapshot
+    [Migration("20240803023012_Servicio01")]
+    partial class Servicio01
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,16 +184,11 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<int>("Frecuencia")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ServicioId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Tarea")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ServicioId");
 
                     b.ToTable("Mantenimientos");
                 });
@@ -293,6 +291,9 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("FechaFin")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Km")
                         .HasColumnType("int");
 
@@ -314,14 +315,14 @@ namespace LogicaAccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MantenimientoId")
                         .HasColumnType("int");
 
                     b.Property<int>("ServicioId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Siniestro")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -568,13 +569,6 @@ namespace LogicaAccesoDatos.Migrations
                     b.Navigation("Repuesto");
                 });
 
-            modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Mantenimiento", b =>
-                {
-                    b.HasOne("LogicaNegocio.EntidadesNegocio.Servicio", null)
-                        .WithMany("ListaMantenimientos")
-                        .HasForeignKey("ServicioId");
-                });
-
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Proveedor", b =>
                 {
                     b.OwnsOne("LogicaNegocio.ValueObject.NombreProveedor", "Nombre", b1 =>
@@ -688,8 +682,6 @@ namespace LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Servicio", b =>
                 {
-                    b.Navigation("ListaMantenimientos");
-
                     b.Navigation("ListaServicioMantenimiento");
                 });
 #pragma warning restore 612, 618

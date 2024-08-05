@@ -12,7 +12,7 @@ namespace LogicaNegocio.EntidadesNegocio
         public DateTime Fecha { get; set; }
         public Vehiculo Vehiculo { get; set; }
         public int Km { get; set; }
-        public DateTime FechaFin { get; set; }
-        public IEnumerable<ServicioMantenimiento> ListaServicoiMantenimiento { get; set; } = new List<ServicioMantenimiento>();
+        public IEnumerable<Mantenimiento> ListaMantenimientos { get; set; } = new List<Mantenimiento>();
+        public IEnumerable<ServicioMantenimiento> ListaServicioMantenimiento { get; set; } = new List<ServicioMantenimiento>();
     }
 }

@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace LogicaAplicacion.CasosDeUso.CUServicio
 {
-    public class CUGetAllServicio : ICUGetAllServicio
+    public class CUUpdateServicio:ICUUpdateServicio
     {
         public IRepositorioServicios RepositorioServicios { get; set; }
-        public CUGetAllServicio(IRepositorioServicios repositorioServicios)
+        public CUUpdateServicio(IRepositorioServicios repositorioServicios)
         {
             RepositorioServicios = repositorioServicios;
         }
 
-        public IEnumerable<Servicio> GetAllServicio()
+        public void UpdateServicio(Servicio servicio)
         {
-            return RepositorioServicios.GetAll();
+            RepositorioServicios.Update(servicio);
         }
     }
 }

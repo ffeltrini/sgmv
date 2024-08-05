@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaAplicacion.CasosDeUso.CUServicio
+namespace LogicaAplicacion.CasosDeUso.CUVehiculo
 {
-    public interface ICUGetAllServicio
+    public interface ICUGetByIdVehiculo
     {
-        IEnumerable<Servicio> GetAllServicio();
+        Vehiculo? GetByIdVehiculo(int id);
     }
 }

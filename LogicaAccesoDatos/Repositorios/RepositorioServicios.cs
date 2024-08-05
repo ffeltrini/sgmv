@@ -1,6 +1,7 @@
 ﻿using LogicaAccesoDatos.BaseDatos;
 using LogicaAccesoDatos.Interfaces;
 using LogicaNegocio.EntidadesNegocio;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,9 +32,14 @@ namespace LogicaAccesoDatos.Repositorios
             }
         }
 
-        public void Update(Servicio item)
+        public void Update(Servicio servicio)
         {
-            throw new NotImplementedException();
+            Contexto.Servicios.Update(servicio);
+            for(int i=0; i<servicio.ListaServicioMantenimiento.ToList().Count; i++)
+            {
+                Contexto.ServicioMantenimientos.Update(servicio.ListaServicioMantenimiento.ToList()[i]);
+            }
+            Contexto.SaveChanges();
         }
 
         public void Delete(int id)
@@ -41,14 +47,21 @@ namespace LogicaAccesoDatos.Repositorios
             throw new NotImplementedException();
         }
 
-        public Servicio GetById(int id)
+        public Servicio? GetById(int id)
         {
-            throw new NotImplementedException();
+            return Contexto.Servicios
+                .Include(s=>s.Vehiculo)
+                .Include(s=>s.ListaServicioMantenimiento)
+                .FirstOrDefault(s=>s.Id== id);
         }
 
         public IEnumerable<Servicio> GetAll()
         {
-            return Contexto.Servicios;
+            return Contexto.Servicios
+                .Include(s => s.Vehiculo)
+                .Include(s=>s.ListaServicioMantenimiento)
+                .ThenInclude(sm=>sm.Mantenimiento)
+                .ToList();
         }
     }
 }
