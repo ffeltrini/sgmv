@@ -186,11 +186,12 @@ namespace MVC.Controllers
                         List<ServicioMantenimiento> listaServicioMantenimiento = new List<ServicioMantenimiento>();
                         for (int i = 0; i < servicioViewModel.MantenimientosId.Length; i++)
                         {
+                            bool siniestro = Request.Form[$"Siniestro[{i}]"] == "true";
                             ServicioMantenimiento servicioMantenimiento = new ServicioMantenimiento
                             {
                                 ServicioId = servicio.Id,
                                 MantenimientoId = servicioViewModel.MantenimientosId[i],
-                                Siniestro = servicioViewModel.Siniestro[i]
+                                Siniestro = siniestro
                             };
                             listaServicioMantenimiento.Add(servicioMantenimiento);
                         }

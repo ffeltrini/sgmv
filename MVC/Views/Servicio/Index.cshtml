@@ -120,16 +120,23 @@
             <tr class="section-mantenimientos" style="display: none;">
                 <th style="background-color: #5d6161; color:#FFFFFF;">Mantenimiento</th>
                 <th style="background-color: #5d6161; color:#FFFFFF;">Siniestro</th>
-                
-                <section>
-                    @foreach (var mantenimiento in servicio.ListaServicioMantenimiento)
-                    {
-                        <tr class="section-mantenimientos" style="display: none; background-color: #BFC9CA;">
-                        <td>@mantenimiento.Mantenimiento.Tarea</td>
-                        <td>@mantenimiento.Siniestro ? "Sí" : "No"</td>
-                        </tr>
-                    }
-                </section>
+
+                @foreach (var mantenimiento in servicio.ListaServicioMantenimiento)
+                {
+                <tr class="section-mantenimientos" style="display: none; background-color: #BFC9CA;">
+                    <td>@mantenimiento.Mantenimiento.Tarea</td>
+                    <td>
+                        @if(mantenimiento.Siniestro)
+                        {
+                        <span>Si</span>
+                        }
+                        else
+                        {
+                        <span>No</span>
+                        }
+                    </td>
+                </tr>
+                }
 
             <tr class="section-mantenimientos" style="display: none;">
                     @*<td colspan="2"></td>*@
