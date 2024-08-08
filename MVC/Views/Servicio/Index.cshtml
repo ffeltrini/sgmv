@@ -69,7 +69,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Km)
             </th>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.Siniestro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProximoServicio)
+            </th>
             <th>
                 Mantenimientos
             </th>
@@ -102,6 +107,12 @@
                     @Html.DisplayFor(modelItem => servicio.Km)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => servicio.Siniestro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => servicio.ProximoServicio)
+                </td>
+                <td>
                     <label class="form-switch">
                         <input onclick="toggleSection(this)" type="checkbox" class="form-switch-input toggle-mantenimientos-details">
                         <span class="form-switch-slider"></span>
@@ -116,25 +127,16 @@
                     @ViewData["ErrorMessage"]
                 </div>
             }
-            <!-- Repuestos details header -->
+            <!-- Mantenimientos details header -->
             <tr class="section-mantenimientos" style="display: none;">
                 <th style="background-color: #5d6161; color:#FFFFFF;">Mantenimiento</th>
-                <th style="background-color: #5d6161; color:#FFFFFF;">Siniestro</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Inicio</th>
 
                 @foreach (var mantenimiento in servicio.ListaServicioMantenimiento)
                 {
                 <tr class="section-mantenimientos" style="display: none; background-color: #BFC9CA;">
                     <td>@mantenimiento.Mantenimiento.Tarea</td>
-                    <td>
-                        @if(mantenimiento.Siniestro)
-                        {
-                        <span>Si</span>
-                        }
-                        else
-                        {
-                        <span>No</span>
-                        }
-                    </td>
+                    
                 </tr>
                 }
 

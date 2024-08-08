@@ -13,7 +13,9 @@ namespace LogicaNegocio.EntidadesNegocio
         public int ServicioId { get; set; }
         public int MantenimientoId { get; set; }
         public Mantenimiento Mantenimiento { get; set; }
-        public bool Siniestro { get; set; }
+        public DateTime Inicio { get; set; }
+        public DateTime Fin { get; set; }
+        public string Observaciones { get; set; }
         
     }
 }

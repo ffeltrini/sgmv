@@ -35,6 +35,16 @@
         <input asp-for="Km" class="form-control" />
         <span asp-validation-for="Km" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="Siniestro" class="control-label"></label>
+        <input type="date" asp-for="Siniestro" class="form-control" />
+        <span asp-validation-for="Siniestro" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProximoServicio" class="control-label"></label>
+        <input type="date" asp-for="ProximoServicio" class="form-control" />
+        <span asp-validation-for="ProximoServicio" class="text-danger"></span>
+    </div>
 
     <!-- Add material selection and quantities dynamically -->
     <h4>Mantenimientos</h4>
@@ -92,8 +102,7 @@
                                         </select>
                                      </td>
                                      <td>
-                                        
-                                        <input type="checkbox" name="Siniestro[${mantenimientoIndex}]" value="true" />
+                                        <input type="" name="Inicio[${mantenimientoIndex}]"/>
                                     </td>
 
                                      <td>

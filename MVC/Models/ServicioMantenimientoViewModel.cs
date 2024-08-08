@@ -9,7 +9,11 @@ namespace MVC.Models
         public int ServicioId { get; set; }
         public Mantenimiento Mantenimiento { get; set; }
         public int MantenimientoId { get; set; }
-        public bool Siniestro { get; set; }
-        
+        public DateTime Inicio { get; set; }
+        public DateTime Fin { get; set; }
+        public string Observaciones { get; set; }
+        //public int EtapaId { get; set; }
+        //select
+        //public IEnumerable<EtapaViewModel> Etapa { get; set; } = new List<EtapaViewModel>();
     }
 }

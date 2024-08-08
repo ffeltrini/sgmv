@@ -70,7 +70,9 @@ namespace MVC.Controllers
                         Anio = v.Anio,
                         Color = v.Color
                     }),
-                    Km = servicio.Km
+                    Km = servicio.Km,
+                    Siniestro = servicio.Siniestro,
+                    ProximoServicio = servicio.ProximoServicio
                 };
                 servicioViewModel.Mantenimientos = servicio.ListaServicioMantenimiento
                     .Select(sm => new MantenimientoViewModel
@@ -84,7 +86,10 @@ namespace MVC.Controllers
                     {
                         Id = sm.Id,
                         Mantenimiento = sm.Mantenimiento,
-                        Siniestro = sm.Siniestro
+                        Inicio = sm.Inicio, 
+                        Fin = sm.Fin,
+                        Observaciones = sm.Observaciones
+                        //Siniestro = sm.Siniestro
                         // Add any additional properties from CompraRepuesto if needed
                     }).ToList();
                 listaServicioViewModel.Add(servicioViewModel);
@@ -179,19 +184,24 @@ namespace MVC.Controllers
                             Fecha = servicioViewModel.Fecha,
                             Vehiculo = vehiculo,
                             Km = servicioViewModel.Km,
-                            
+                            Siniestro = servicioViewModel.Siniestro,
+                            ProximoServicio = servicioViewModel.ProximoServicio
                         };
                         CUCreateServicio.CreateServicio(servicio);
 
                         List<ServicioMantenimiento> listaServicioMantenimiento = new List<ServicioMantenimiento>();
                         for (int i = 0; i < servicioViewModel.MantenimientosId.Length; i++)
                         {
-                            bool siniestro = Request.Form[$"Siniestro[{i}]"] == "true";
+                            //bool siniestro = Request.Form[$"Siniestro[{i}]"] == "true";
                             ServicioMantenimiento servicioMantenimiento = new ServicioMantenimiento
                             {
                                 ServicioId = servicio.Id,
                                 MantenimientoId = servicioViewModel.MantenimientosId[i],
-                                Siniestro = siniestro
+                                Inicio = servicioViewModel.Inicio[i],
+                                Fin = servicioViewModel.Fin[i],
+                                Observaciones = servicioViewModel.Observaciones[i]
+
+                                //Siniestro = siniestro
                             };
                             listaServicioMantenimiento.Add(servicioMantenimiento);
                         }
