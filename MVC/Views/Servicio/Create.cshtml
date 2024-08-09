@@ -37,7 +37,8 @@
     </div>
     <div class="form-group">
         <label asp-for="Siniestro" class="control-label"></label>
-        <input type="date" asp-for="Siniestro" class="form-control" />
+        <input class="form-check-input" asp-for="Siniestro" />
+        @*<input type="checkbox" asp-for="Siniestro" class="form-control" />*@
         <span asp-validation-for="Siniestro" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -102,9 +103,14 @@
                                         </select>
                                      </td>
                                      <td>
-                                        <input type="" name="Inicio[${mantenimientoIndex}]"/>
+                                        <input type="datetime-local" name="Inicio[${mantenimientoIndex}]"/>
                                     </td>
-
+                                    <td>
+                                        <input type="datetime-local" name="Fin[${mantenimientoIndex}]"/>
+                                    </td>
+                                    <td>
+                                        <textarea name="Observaciones[${mantenimientoIndex}]" rows="4" cols="50" maxlength="250"></textarea>
+                                    </td>     
                                      <td>
                                         <button type="button" class="btn btn-danger remove-mantenimiento">Eliminar</button>
                                      </td>`;

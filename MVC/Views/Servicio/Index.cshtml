@@ -46,6 +46,15 @@
             table td:nth-child(6) {
                 width: 50px; /* Adjust the width as needed */
             }
+
+            .section-mantenimientos th:nth-child(1),
+            .section-mantenimientos td:nth-child(1) {
+                width: 200px; /* Ajusta al doble del tamaño actual */
+            }
+            .section-mantenimientos th:nth-child(4),
+            .section-mantenimientos td:nth-child(4) {
+                width: 350px; /* Ajusta al doble del tamaño actual */
+            }
 </style>
 
 <h1>Listado de Servicios</h1>
@@ -131,11 +140,16 @@
             <tr class="section-mantenimientos" style="display: none;">
                 <th style="background-color: #5d6161; color:#FFFFFF;">Mantenimiento</th>
                 <th style="background-color: #5d6161; color:#FFFFFF;">Inicio</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Fin</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Observaciones</th>
 
                 @foreach (var mantenimiento in servicio.ListaServicioMantenimiento)
                 {
                 <tr class="section-mantenimientos" style="display: none; background-color: #BFC9CA;">
                     <td>@mantenimiento.Mantenimiento.Tarea</td>
+                    <td>@mantenimiento.Inicio</td>
+                    <td>@mantenimiento.Fin</td>
+                    <td style="white-space: pre-wrap; word-wrap: break-word;">@mantenimiento.Observaciones</td>
                     
                 </tr>
                 }
