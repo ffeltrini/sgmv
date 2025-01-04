@@ -14,6 +14,8 @@ namespace MVC.Models
         [Display(Name = "Stock Mínimo")]
         public int StockMin { get; set; }
         public int Stock { get; set; }
+
+        public int[] Cantidad { get; set; }
         public IEnumerable<CompraRepuesto> ListaCompraRepuestos { get; set; } = new List<CompraRepuesto>();
     }
 }

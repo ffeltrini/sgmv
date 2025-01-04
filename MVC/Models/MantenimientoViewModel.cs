@@ -7,5 +7,7 @@
         public string Descripcion { get; set; }
         public TimeSpan Duracion { get; set; }
         public int Frecuencia { get; set; }
+
+        
     }
 }

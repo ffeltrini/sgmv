@@ -3,11 +3,11 @@
 <h2>Alta Servicio</h2>
 
 @if (ViewBag.Error != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @ViewBag.Error
-        </div>
-    }
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
 @if (ViewData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">
@@ -19,7 +19,7 @@
 {
     <div class="form-group">
         <label asp-for="Fecha" class="control-label"></label>
-        <input type="date" id="fechaInput" asp-for="Fecha" class="form-control" readonly />
+        <input type="date" asp-for="Fecha" class="form-control" />
         <span asp-validation-for="Fecha" class="text-danger"></span>
     </div>
 
@@ -30,99 +30,121 @@
         </select>
         <span asp-validation-for="VehiculoId" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Km" class="control-label"></label>
         <input asp-for="Km" class="form-control" />
         <span asp-validation-for="Km" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Siniestro" class="control-label"></label>
         <input class="form-check-input" asp-for="Siniestro" />
-        @*<input type="checkbox" asp-for="Siniestro" class="form-control" />*@
         <span asp-validation-for="Siniestro" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="ProximoServicio" class="control-label"></label>
         <input type="date" asp-for="ProximoServicio" class="form-control" />
         <span asp-validation-for="ProximoServicio" class="text-danger"></span>
     </div>
 
-    <!-- Add material selection and quantities dynamically -->
+    <!-- Zona de Mantenimientos Dinámicos -->
     <h4>Mantenimientos</h4>
-    <table id="mantenimientosTable">
-        <thead>
-            <tr>
-                @*<th>Repuesto</th>
-                <th>Cantidad</th>
-                <th>Precio</th>*@
-            </tr>
-        </thead>
-        <tbody id="mantenimientosTableBody">
-            <!-- Dynamic rows will be added here -->
-        </tbody>
-    </table>
-
-    <button type="button" id="btnAddMantenimiento">Agregar Mantenimiento</button>
+    <div id="mantenimientos-container">
+        <!-- Aquí se agregarán los mantenimientos dinámicamente -->
+    </div>
+    <button type="button" class="btn btn-primary" onclick="addMantenimiento()">Agregar Mantenimiento</button>
 
     <div class="form-group">
-        <input type="submit" value="Guardar" class="btn btn-primary" />
+        <input type="submit" value="Guardar" class="btn btn-success" />
     </div>
 }
 
 @section Scripts {
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Get current date and format it as yyyy-mm-dd
-            var currentDate = new Date().toISOString().split('T')[0];
-            document.getElementById("fechaInput").value = currentDate;
+        let mantenimientoIndex = 0;
+        let repuestoIndex = 0; // Este índice será global para llevar la cuenta de todos los repuestos
 
-            // Track the index for dynamic elements
-            var mantenimientoIndex = 0;
+        function addMantenimiento() {
+            const mantenimientosContainer = document.getElementById('mantenimientos-container');
+            const mantenimientoHtml = `
+                <div class="mantenimiento-item" id="mantenimiento-${mantenimientoIndex}">
+                    <h5>Mantenimiento #${mantenimientoIndex + 1}</h5>
+                    <div class="form-group d-flex">
+                        <div class="flex-fill">
+                            <label>Mantenimiento</label>
+                            <select name="MantenimientosId[${mantenimientoIndex}]" class="form-control">
+                                <option value="">-- Seleccione un Mantenimiento --</option>
+                                @foreach (var mantenimiento in Model.Mantenimientos)
+                                {
+                                    <option value="@mantenimiento.Id">@mantenimiento.Tarea</option>
+                                }
+                            </select>
+                        </div>
 
-            // Add labels for Repuesto, Cantidad, and Precio outside the loop
-            var labelRow = document.createElement("tr");
+                        <div class="flex-fill">
+                            <label>Fecha Inicio</label>
+                            <input type="datetime-local" name="Inicio[${mantenimientoIndex}]" class="form-control" />
+                        </div>
 
-            // Handle click event for the "Add Repuesto" button
-            document.getElementById("btnAddMantenimiento").addEventListener("click", function () {
-                var newRow = document.createElement("tr");
+                        <div class="flex-fill">
+                            <label>Fecha Fin</label>
+                            <input type="datetime-local" name="Fin[${mantenimientoIndex}]" class="form-control" />
+                        </div>
 
-                if (mantenimientoIndex < 1) {
-                    labelRow.innerHTML = `<td><label for="mantenimiento" class="control-label">Mantenimiento</label></td>
-                                          <td><label for="siniestro" class="control-label">Siniestro</label></td>
-                                          
-                                          <td></td>`;  // Empty cell for delete button
-                    document.getElementById("mantenimientosTableBody").appendChild(labelRow);
-                }
+                        <div class="flex-fill">
+                            <label>Etapa</label>
+                            <select name="EtapaId[${mantenimientoIndex}]" class="form-control">
+                                <option value="">-- Seleccione una Etapa --</option>
+                                @foreach (var etapa in Model.Etapas)
+                                {
+                                    <option value="@etapa.Id">@etapa.EtapaNombre</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
 
-                newRow.innerHTML = `<td>
-                                        <select name="MantenimientosId[${mantenimientoIndex}]" class="form-control">
-                                            @foreach (var mantenimiento in Model.Mantenimientos)
-                                            {
-                                                <option value="@mantenimiento.Id">@mantenimiento.Tarea</option>
-                                            }
-                                        </select>
-                                     </td>
-                                     <td>
-                                        <input type="datetime-local" name="Inicio[${mantenimientoIndex}]"/>
-                                    </td>
-                                    <td>
-                                        <input type="datetime-local" name="Fin[${mantenimientoIndex}]"/>
-                                    </td>
-                                    <td>
-                                        <textarea name="Observaciones[${mantenimientoIndex}]" rows="4" cols="50" maxlength="250"></textarea>
-                                    </td>     
-                                     <td>
-                                        <button type="button" class="btn btn-danger remove-mantenimiento">Eliminar</button>
-                                     </td>`;
-                document.getElementById("mantenimientosTableBody").appendChild(newRow);
+                    <div class="form-group">
+                        <label>Observaciones</label>
+                        <input type="text" name="Observaciones[${mantenimientoIndex}]" class="form-control" />
+                    </div>
+                </div>
+                <!-- Zona de Repuestos para este Mantenimiento -->
+                <div id="repuestos-container-${mantenimientoIndex}">
+                    <h6>Repuestos</h6>
+                    <!-- Aquí se agregarán los repuestos dinámicamente -->
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addRepuesto(${mantenimientoIndex})">Agregar Repuesto</button>
+            `;
 
-                // Add event listener to the new remove button
-                newRow.querySelector('.remove-mantenimiento').addEventListener('click', function () {
-                    newRow.remove();
-                });
+            mantenimientosContainer.insertAdjacentHTML('beforeend', mantenimientoHtml);
+            mantenimientoIndex++;
+        }
 
-                mantenimientoIndex++;
-            });
-        });
+        function addRepuesto(mantenimientoIndex) {
+            const repuestosContainer = document.getElementById(`repuestos-container-${mantenimientoIndex}`);
+            const repuestoHtml = `
+                <div class="repuesto-item">
+                    <div class="form-group">
+                        <label>Repuesto</label>
+                        <select name="ListaRepuestosUtilizados[${repuestoIndex}].RepuestoId" class="form-control">
+                            <option value="">-- Seleccione un Repuesto --</option>
+                            @foreach (var repuesto in Model.Repuestos)
+                            {
+                                <option value="@repuesto.Id">@repuesto.Nombre</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" name="ListaRepuestosUtilizados[${repuestoIndex}].Cantidad" class="form-control" />
+                    </div>
+                </div>
+            `;
+            repuestosContainer.insertAdjacentHTML('beforeend', repuestoHtml);
+            repuestoIndex++; // Incrementamos repuestoIndex para cada nuevo repuesto
+        }
     </script>
 }

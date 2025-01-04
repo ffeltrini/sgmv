@@ -1,7 +1,10 @@
 ﻿using LogicaAplicacion.CasosDeUso.CUCompra;
+using LogicaAplicacion.CasosDeUso.CUEtapa;
 using LogicaAplicacion.CasosDeUso.CUMantenimiento;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
+using LogicaAplicacion.CasosDeUso.CURepuestoUtilizado;
 using LogicaAplicacion.CasosDeUso.CUServicio;
+using LogicaAplicacion.CasosDeUso.CUServicioMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUTipoVehiculo;
 using LogicaAplicacion.CasosDeUso.CUVehiculo;
 using LogicaNegocio.EntidadesNegocio;
@@ -23,6 +26,11 @@ namespace MVC.Controllers
         public ICUCreateServicio CUCreateServicio { get; set; }
         public ICUUpdateServicio CUUpdateServicio { get; set; }
         public ICUGetByIdServicio CUGetByIdServicio { get; set; }
+        public ICUGetAllEtapa CUGetAllEtapa { get; set; }
+        public ICUGetAllRepuesto CUGetAllRepuesto { get; set; }
+        public ICUGetByIdRepuesto CUGetByIdRepuesto { get; set; }
+        public ICUCreateRepuestoUtilizado CUCreateRepuestoUtilizado { get; set; }
+        public ICUCreateServicioMantenimiento CUCreateServicioMantenimiento { get; set;}
 
         public ServicioController(ICUGetAllServicio cUGetAllServicio,
             ICUGetAllVehiculo cUGetAllVehiculo,
@@ -31,7 +39,12 @@ namespace MVC.Controllers
             ICUGetByIdVehiculo cUGetByIdVehiculo,
             ICUCreateServicio cUCreateServicio,
             ICUUpdateServicio cUUpdateServicio,
-            ICUGetByIdServicio cUGetByIdServicio)
+            ICUGetByIdServicio cUGetByIdServicio,
+            ICUGetAllEtapa cUGetAllEtapa,
+            ICUGetAllRepuesto cUGetAllRepuesto,
+            ICUGetByIdRepuesto cUGetByIdRepuesto,
+            ICUCreateRepuestoUtilizado cUCreateRepuestoUtilizado,
+            ICUCreateServicioMantenimiento cUCreateServicioMantenimiento)
         {
             CUGetAllServicio = cUGetAllServicio;
             CUGetAllVehiculo = cUGetAllVehiculo;
@@ -40,7 +53,12 @@ namespace MVC.Controllers
             CUGetByIdVehiculo = cUGetByIdVehiculo;
             CUCreateServicio = cUCreateServicio;
             CUUpdateServicio = cUUpdateServicio;
-            CUGetByIdServicio= cUGetByIdServicio;
+            CUGetByIdServicio = cUGetByIdServicio;
+            CUGetAllEtapa = cUGetAllEtapa;
+            CUGetAllRepuesto = cUGetAllRepuesto;
+            CUGetByIdRepuesto = cUGetByIdRepuesto;  
+            CUCreateRepuestoUtilizado= cUCreateRepuestoUtilizado;
+            CUCreateServicioMantenimiento = cUCreateServicioMantenimiento;
         }
 
         // GET: ServicioController
@@ -128,6 +146,18 @@ namespace MVC.Controllers
                 Id = m.Id,
                 Tarea = m.Tarea
             });
+            servicioViewModel.Etapas = CUGetAllEtapa.GetAllEtapa().Select(e => new EtapaViewModel()
+            {
+                Id = e.Id,
+                EtapaNombre = e.EtapaNombre
+            }).ToList();
+            servicioViewModel.Repuestos = CUGetAllRepuesto.GetAllRepuesto().Select(r => new RepuestoViewModel
+            {
+                Id=r.Id,
+                Codigo= r.Codigo,
+                Nombre= r.Nombre
+            }).ToList();
+
             return View(servicioViewModel);
         }
 
@@ -168,7 +198,13 @@ namespace MVC.Controllers
                     Tarea = m.Tarea
                 });
 
-                if (ModelState.IsValid)
+                servicioVM.Repuestos = CUGetAllRepuesto.GetAllRepuesto().Select(r => new RepuestoViewModel()
+                {
+                    Id = r.Id,
+                    Nombre = r.Nombre
+                });
+
+                if (!ModelState.IsValid)
                 {
                     try
                     {
@@ -188,23 +224,54 @@ namespace MVC.Controllers
                             ProximoServicio = servicioViewModel.ProximoServicio
                         };
                         CUCreateServicio.CreateServicio(servicio);
-
+                        //ServicioMantenimiento servicioMantenimiento = new ServicioMantenimiento();
                         List<ServicioMantenimiento> listaServicioMantenimiento = new List<ServicioMantenimiento>();
+
+
+
                         for (int i = 0; i < servicioViewModel.MantenimientosId.Length; i++)
                         {
-                            //bool siniestro = Request.Form[$"Siniestro[{i}]"] == "true";
                             ServicioMantenimiento servicioMantenimiento = new ServicioMantenimiento
                             {
                                 ServicioId = servicio.Id,
                                 MantenimientoId = servicioViewModel.MantenimientosId[i],
                                 Inicio = servicioViewModel.Inicio[i],
                                 Fin = servicioViewModel.Fin[i],
+                                EtapaId = servicioViewModel.EtapaId[i],
                                 Observaciones = servicioViewModel.Observaciones[i]
-
-                                //Siniestro = siniestro
                             };
+
+                            // Verificar si RepuestosUtilizados está inicializado y si el índice i es válido
+                            if (servicioViewModel.ListaRepuestosUtilizados != null &&
+                                servicioViewModel.ListaRepuestosUtilizados.Count() > i)
+                            {
+                                List<RepuestoUtilizado> listaRepuestosUtilizados = new List<RepuestoUtilizado>();
+
+                                foreach (var repuestoUtilizadoVM in servicioViewModel.ListaRepuestosUtilizados)
+                                {
+                                    RepuestoUtilizado repuestoUtilizado = new RepuestoUtilizado()
+                                    {
+                                        RepuestoId = repuestoUtilizadoVM.RepuestoId,
+                                        ServicioMantenimientoId=repuestoUtilizadoVM.ServicioMantenimientoId,
+                                        Cantidad = repuestoUtilizadoVM.Cantidad,
+                                        Fecha = DateTime.Now
+                                    };
+
+                                    listaRepuestosUtilizados.Add(repuestoUtilizado);
+                                }
+
+                                servicioMantenimiento.ListaRepuestosUtilizados = listaRepuestosUtilizados;
+                            }
+                            else
+                            {
+                                // Si no hay repuestos utilizados, asignar una lista vacía (opcional)
+                                servicioMantenimiento.ListaRepuestosUtilizados = new List<RepuestoUtilizado>();
+                            }
+
                             listaServicioMantenimiento.Add(servicioMantenimiento);
                         }
+
+
 
                         servicio.ListaServicioMantenimiento = listaServicioMantenimiento;
                         CUUpdateServicio.UpdateServicio(servicio);
@@ -227,6 +294,11 @@ namespace MVC.Controllers
             {
                 ViewBag.Error = "Cada servicio debe tener asociados al menos un mantenimiento";
             }
+            servicioViewModel.Etapas = CUGetAllEtapa.GetAllEtapa().Select(e => new EtapaViewModel
+            {
+                Id = e.Id,
+                EtapaNombre = e.EtapaNombre
+            }).ToList();
 
             return View(servicioViewModel);
         }

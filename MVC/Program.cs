@@ -10,7 +10,9 @@ using LogicaAplicacion.CasosDeUso.CUEtapa;
 using LogicaAplicacion.CasosDeUso.CUMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUProveedor;
 using LogicaAplicacion.CasosDeUso.CURepuesto;
+using LogicaAplicacion.CasosDeUso.CURepuestoUtilizado;
 using LogicaAplicacion.CasosDeUso.CUServicio;
+using LogicaAplicacion.CasosDeUso.CUServicioMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUTipoMantenimiento;
 using LogicaAplicacion.CasosDeUso.CUTipoRol;
 using LogicaAplicacion.CasosDeUso.CUTipoVehiculo;
@@ -55,12 +57,16 @@ namespace MVC
             builder.Services.AddScoped<IRepositorio<Etapa>, RepositorioEtapas>();
             builder.Services.AddScoped<ICUCreateEtapa, CUCreateEtapa>();
             builder.Services.AddScoped<ICUGetAllEtapa, CUGetAllEtapa>();
+            builder.Services.AddScoped<ICUGetByIdEtapa, CUGetByIdEtapa>();
 
             builder.Services.AddScoped<IRepositorioRepuestos, RepositorioRepuestos>();
             builder.Services.AddScoped<ICUGetAllRepuesto,CUGetAllRepuesto>();
             builder.Services.AddScoped<ICUCreateRepuesto, CUCreateRepuesto>();
             builder.Services.AddScoped<ICUGetByIdRepuesto, CUGetByIdRepuesto>();
             builder.Services.AddScoped<ICUUpdateRepuesto, CUUpdateRepuesto>();
+
+            builder.Services.AddScoped<IRepositorio<RepuestoUtilizado>, RepositorioRepuestosUtilizados>();
+            builder.Services.AddScoped<ICUCreateRepuestoUtilizado, CUCreateRepuestoUtilizado>();
 
             builder.Services.AddScoped<IRepositorioServicios, RepositorioServicios>();
             builder.Services.AddScoped<ICUGetAllServicio, CUGetAllServicio>();
@@ -105,6 +111,11 @@ namespace MVC
             builder.Services.AddScoped<ICUGetAllVehiculo, CUGetAllVehiculo>();
             builder.Services.AddScoped<ICUCreateVehiculo,CUCreateVehiculo>();
             builder.Services.AddScoped<ICUGetByIdVehiculo, CUGetByIdVehiculo>();
+
+            builder.Services.AddScoped<IRepositorio<ServicioMantenimiento>,RepositorioServicioMantenimientos>();
+            builder.Services.AddScoped<ICUGetAllServicioMantenimiento,CUGetAllServicioMantenimiento>();
+            builder.Services.AddScoped<ICUCreateServicioMantenimiento, CUCreateServicioMantenimiento>();
+            builder.Services.AddScoped<ICUUpdateServicioMantenimiento, CUUpdateServicioMantenimiento>();
 
             builder.Services.AddScoped<ICULogin, CULogin>();
 

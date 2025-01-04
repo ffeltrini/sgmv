@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LogicaAccesoDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class Vehiculo01 : Migration
+    public partial class Inicio : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -61,22 +61,6 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Mantenimientos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Tarea = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Duracion = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Frecuencia = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Mantenimientos", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Proveedores",
                 columns: table => new
                 {
@@ -89,22 +73,6 @@ namespace LogicaAccesoDatos.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Proveedores", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RepuestoUtilizados",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ServicioMantenimientoId = table.Column<int>(type: "int", nullable: false),
-                    RepuestoId = table.Column<int>(type: "int", nullable: false),
-                    Cantidad = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RepuestoUtilizados", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,31 +203,6 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Repuestos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Medida = table.Column<float>(type: "real", nullable: false),
-                    Unidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StockMin = table.Column<int>(type: "int", nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false),
-                    CompraId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Repuestos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Repuestos_Compras_CompraId",
-                        column: x => x.CompraId,
-                        principalTable: "Compras",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Vehiculos",
                 columns: table => new
                 {
@@ -298,6 +241,118 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Servicios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VehiculoId = table.Column<int>(type: "int", nullable: false),
+                    Km = table.Column<int>(type: "int", nullable: false),
+                    Siniestro = table.Column<bool>(type: "bit", nullable: false),
+                    ProximoServicio = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Servicios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Servicios_Vehiculos_VehiculoId",
+                        column: x => x.VehiculoId,
+                        principalTable: "Vehiculos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mantenimientos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tarea = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duracion = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Frecuencia = table.Column<int>(type: "int", nullable: false),
+                    ServicioId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mantenimientos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Mantenimientos_Servicios_ServicioId",
+                        column: x => x.ServicioId,
+                        principalTable: "Servicios",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServicioMantenimientos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ServicioId = table.Column<int>(type: "int", nullable: false),
+                    MantenimientoId = table.Column<int>(type: "int", nullable: false),
+                    Inicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fin = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EtapaId = table.Column<int>(type: "int", nullable: false),
+                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServicioMantenimientos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ServicioMantenimientos_Etapas_EtapaId",
+                        column: x => x.EtapaId,
+                        principalTable: "Etapas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServicioMantenimientos_Mantenimientos_MantenimientoId",
+                        column: x => x.MantenimientoId,
+                        principalTable: "Mantenimientos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServicioMantenimientos_Servicios_ServicioId",
+                        column: x => x.ServicioId,
+                        principalTable: "Servicios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Repuestos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Medida = table.Column<float>(type: "real", nullable: false),
+                    Unidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StockMin = table.Column<int>(type: "int", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    CompraId = table.Column<int>(type: "int", nullable: true),
+                    ServicioMantenimientoId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Repuestos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Repuestos_Compras_CompraId",
+                        column: x => x.CompraId,
+                        principalTable: "Compras",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Repuestos_ServicioMantenimientos_ServicioMantenimientoId",
+                        column: x => x.ServicioMantenimientoId,
+                        principalTable: "ServicioMantenimientos",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CompraRepuestos",
                 columns: table => new
                 {
@@ -326,62 +381,29 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Servicios",
+                name: "RepuestoUtilizados",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VehiculoId = table.Column<int>(type: "int", nullable: false),
-                    Km = table.Column<int>(type: "int", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ServicioMantenimientoId = table.Column<int>(type: "int", nullable: false),
+                    RepuestoId = table.Column<int>(type: "int", nullable: false),
+                    Cantidad = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Servicios", x => x.Id);
+                    table.PrimaryKey("PK_RepuestoUtilizados", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Servicios_Vehiculos_VehiculoId",
-                        column: x => x.VehiculoId,
-                        principalTable: "Vehiculos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ServicioMantenimientos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ServicioId = table.Column<int>(type: "int", nullable: false),
-                    MantenimientoId = table.Column<int>(type: "int", nullable: false),
-                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TipoMantenimientoId = table.Column<int>(type: "int", nullable: false),
-                    Siniestro = table.Column<bool>(type: "bit", nullable: false),
-                    Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaProxMant = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EtapaId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ServicioMantenimientos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ServicioMantenimientos_Etapas_EtapaId",
-                        column: x => x.EtapaId,
-                        principalTable: "Etapas",
+                        name: "FK_RepuestoUtilizados_Repuestos_RepuestoId",
+                        column: x => x.RepuestoId,
+                        principalTable: "Repuestos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ServicioMantenimientos_Servicios_ServicioId",
-                        column: x => x.ServicioId,
-                        principalTable: "Servicios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ServicioMantenimientos_TipoMantenimientos_TipoMantenimientoId",
-                        column: x => x.TipoMantenimientoId,
-                        principalTable: "TipoMantenimientos",
+                        name: "FK_RepuestoUtilizados_ServicioMantenimientos_ServicioMantenimientoId",
+                        column: x => x.ServicioMantenimientoId,
+                        principalTable: "ServicioMantenimientos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -412,6 +434,11 @@ namespace LogicaAccesoDatos.Migrations
                 column: "RolId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Mantenimientos_ServicioId",
+                table: "Mantenimientos",
+                column: "ServicioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Proveedores_Nombre_Valor",
                 table: "Proveedores",
                 column: "Nombre_Valor",
@@ -423,19 +450,34 @@ namespace LogicaAccesoDatos.Migrations
                 column: "CompraId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Repuestos_ServicioMantenimientoId",
+                table: "Repuestos",
+                column: "ServicioMantenimientoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepuestoUtilizados_RepuestoId",
+                table: "RepuestoUtilizados",
+                column: "RepuestoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepuestoUtilizados_ServicioMantenimientoId",
+                table: "RepuestoUtilizados",
+                column: "ServicioMantenimientoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ServicioMantenimientos_EtapaId",
                 table: "ServicioMantenimientos",
                 column: "EtapaId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ServicioMantenimientos_MantenimientoId",
+                table: "ServicioMantenimientos",
+                column: "MantenimientoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ServicioMantenimientos_ServicioId",
                 table: "ServicioMantenimientos",
                 column: "ServicioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServicioMantenimientos_TipoMantenimientoId",
-                table: "ServicioMantenimientos",
-                column: "TipoMantenimientoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Servicios_VehiculoId",
@@ -471,34 +513,34 @@ namespace LogicaAccesoDatos.Migrations
                 name: "Empleados");
 
             migrationBuilder.DropTable(
-                name: "Mantenimientos");
-
-            migrationBuilder.DropTable(
                 name: "RepuestoUtilizados");
-
-            migrationBuilder.DropTable(
-                name: "ServicioMantenimientos");
-
-            migrationBuilder.DropTable(
-                name: "Repuestos");
-
-            migrationBuilder.DropTable(
-                name: "Etapas");
-
-            migrationBuilder.DropTable(
-                name: "Servicios");
 
             migrationBuilder.DropTable(
                 name: "TipoMantenimientos");
 
             migrationBuilder.DropTable(
+                name: "Repuestos");
+
+            migrationBuilder.DropTable(
                 name: "Compras");
 
             migrationBuilder.DropTable(
-                name: "Vehiculos");
+                name: "ServicioMantenimientos");
 
             migrationBuilder.DropTable(
                 name: "Proveedores");
+
+            migrationBuilder.DropTable(
+                name: "Etapas");
+
+            migrationBuilder.DropTable(
+                name: "Mantenimientos");
+
+            migrationBuilder.DropTable(
+                name: "Servicios");
+
+            migrationBuilder.DropTable(
+                name: "Vehiculos");
 
             migrationBuilder.DropTable(
                 name: "Aseguradoras");

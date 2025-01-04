@@ -13,10 +13,23 @@ namespace MVC.Models
         public int[] MantenimientosId { get; set; }
         public DateTime[] Inicio { get; set; }
         public DateTime[] Fin { get; set; }
+        public int[] EtapaId { get; set; }
         public string[] Observaciones { get; set; }
+
+        public int[] RepuestosId { get; set; }
+
+        // Nueva propiedad que usa un diccionario para los repuestos utilizados
+        //public Dictionary<int, List<RepuestoViewModel>> RepuestosUtilizados { get; set; }
         public IEnumerable<ServicioMantenimientoViewModel> ListaServicioMantenimiento { get; set; } = new List<ServicioMantenimientoViewModel>();
         //select
         public IEnumerable<VehiculoViewModel> Vehiculos { get; set; }=new List<VehiculoViewModel>();
         public IEnumerable<MantenimientoViewModel> Mantenimientos { get;set; }= new List<MantenimientoViewModel>();
+
+        public IEnumerable<EtapaViewModel> Etapas { get; set; } = new List<EtapaViewModel>();
+
+        public IEnumerable<RepuestoViewModel> Repuestos { get; set; } = new List<RepuestoViewModel>();
+        public IEnumerable<RepuestoUtilizadoViewModel> ListaRepuestosUtilizados { get; set; } = new List<RepuestoUtilizadoViewModel>();
+        
+
     }
 }

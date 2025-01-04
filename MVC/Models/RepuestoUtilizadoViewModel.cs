@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LogicaNegocio.EntidadesNegocio;
 
-namespace LogicaNegocio.EntidadesNegocio
+namespace MVC.Models
 {
-    public class RepuestoUtilizado
+    public class RepuestoUtilizadoViewModel
     {
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
@@ -15,6 +11,7 @@ namespace LogicaNegocio.EntidadesNegocio
         public Repuesto Repuesto { get; set; }
         public int RepuestoId { get; set; }
         public int Cantidad { get; set; }
-        
+
+        //public IEnumerable<RepuestoUtilizadoViewModel> Repuestos { get; set; } = new List<RepuestoUtilizadoViewModel>();
     }
 }

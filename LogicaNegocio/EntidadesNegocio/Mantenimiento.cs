@@ -13,5 +13,7 @@ namespace LogicaNegocio.EntidadesNegocio
         public string Descripcion { get; set; }
         public TimeSpan Duracion { get; set; }
         public int Frecuencia { get; set; }
+
+        public IEnumerable<Mantenimiento> ListaRepuestos { get; set; }= new List<Mantenimiento>();
     }
 }

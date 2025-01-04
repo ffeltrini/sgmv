@@ -37,6 +37,7 @@ namespace LogicaAccesoDatos.BaseDatos
             modelBuilder.Entity<Usuario>().UseTpcMappingStrategy();
             modelBuilder.Entity<Cliente>().ToTable("Clientes");
             modelBuilder.Entity<Empleado>().ToTable("Empleados");
+
         }
 
     }

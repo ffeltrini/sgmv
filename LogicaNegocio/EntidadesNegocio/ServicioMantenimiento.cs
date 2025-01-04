@@ -15,7 +15,13 @@ namespace LogicaNegocio.EntidadesNegocio
         public Mantenimiento Mantenimiento { get; set; }
         public DateTime Inicio { get; set; }
         public DateTime Fin { get; set; }
-        public string Observaciones { get; set; }
+        public int EtapaId { get; set; }
+        public Etapa Etapa { get; set; }
         
+        public string Observaciones { get; set; }
+        //public IEnumerable<Repuesto> ListaRepuestos { get; set; } = new List<Repuesto>();
+        public IEnumerable<RepuestoUtilizado> ListaRepuestosUtilizados { get; set; } = new List<RepuestoUtilizado>();
+        
+
     }
 }
