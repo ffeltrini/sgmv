@@ -12,8 +12,8 @@ namespace LogicaNegocio.EntidadesNegocio
         public DateTime Fecha { get; set; }
         public int ServicioMantenimientoId { get; set; }  // Enlace con ServicioMantenimiento
         public ServicioMantenimiento ServicioMantenimiento { get; set; }  // Relación con ServicioMantenimiento
-        public Repuesto Repuesto { get; set; }
         public int RepuestoId { get; set; }
+        public Repuesto Repuesto { get; set; }
         public int Cantidad { get; set; }
         
     }

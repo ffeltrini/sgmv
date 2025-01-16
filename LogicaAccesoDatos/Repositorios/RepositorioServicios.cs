@@ -57,11 +57,21 @@ namespace LogicaAccesoDatos.Repositorios
 
         public IEnumerable<Servicio> GetAll()
         {
-            return Contexto.Servicios
-                .Include(s => s.Vehiculo)
-                .Include(s=>s.ListaServicioMantenimiento)
-                .ThenInclude(sm=>sm.Mantenimiento)
-                .ToList();
+            var servicios = Contexto.Servicios
+        .Include(s => s.Vehiculo)
+        .Include(s => s.ListaServicioMantenimiento)
+            .ThenInclude(sm => sm.Mantenimiento)
+        .Include(s => s.ListaServicioMantenimiento)
+            .ThenInclude(sm => sm.ListaRepuestosUtilizados)
+                .ThenInclude(ru => ru.Repuesto)
+        .ToList();
+
+            return servicios;
         }
+
+
+
+
+
     }
 }

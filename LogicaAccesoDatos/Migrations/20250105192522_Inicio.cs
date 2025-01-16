@@ -61,6 +61,22 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Mantenimientos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tarea = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duracion = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Frecuencia = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mantenimientos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Proveedores",
                 columns: table => new
                 {
@@ -203,6 +219,31 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Repuestos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Medida = table.Column<float>(type: "real", nullable: false),
+                    Unidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StockMin = table.Column<int>(type: "int", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    CompraId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Repuestos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Repuestos_Compras_CompraId",
+                        column: x => x.CompraId,
+                        principalTable: "Compras",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vehiculos",
                 columns: table => new
                 {
@@ -241,6 +282,34 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CompraRepuestos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompraId = table.Column<int>(type: "int", nullable: false),
+                    RepuestoId = table.Column<int>(type: "int", nullable: false),
+                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Cantidad = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CompraRepuestos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CompraRepuestos_Compras_CompraId",
+                        column: x => x.CompraId,
+                        principalTable: "Compras",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CompraRepuestos_Repuestos_RepuestoId",
+                        column: x => x.RepuestoId,
+                        principalTable: "Repuestos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Servicios",
                 columns: table => new
                 {
@@ -261,28 +330,6 @@ namespace LogicaAccesoDatos.Migrations
                         principalTable: "Vehiculos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Mantenimientos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Tarea = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Duracion = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Frecuencia = table.Column<int>(type: "int", nullable: false),
-                    ServicioId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Mantenimientos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Mantenimientos_Servicios_ServicioId",
-                        column: x => x.ServicioId,
-                        principalTable: "Servicios",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -322,65 +369,6 @@ namespace LogicaAccesoDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Repuestos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Medida = table.Column<float>(type: "real", nullable: false),
-                    Unidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StockMin = table.Column<int>(type: "int", nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false),
-                    CompraId = table.Column<int>(type: "int", nullable: true),
-                    ServicioMantenimientoId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Repuestos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Repuestos_Compras_CompraId",
-                        column: x => x.CompraId,
-                        principalTable: "Compras",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Repuestos_ServicioMantenimientos_ServicioMantenimientoId",
-                        column: x => x.ServicioMantenimientoId,
-                        principalTable: "ServicioMantenimientos",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompraRepuestos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompraId = table.Column<int>(type: "int", nullable: false),
-                    RepuestoId = table.Column<int>(type: "int", nullable: false),
-                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Cantidad = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompraRepuestos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CompraRepuestos_Compras_CompraId",
-                        column: x => x.CompraId,
-                        principalTable: "Compras",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CompraRepuestos_Repuestos_RepuestoId",
-                        column: x => x.RepuestoId,
-                        principalTable: "Repuestos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RepuestoUtilizados",
                 columns: table => new
                 {
@@ -389,7 +377,8 @@ namespace LogicaAccesoDatos.Migrations
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ServicioMantenimientoId = table.Column<int>(type: "int", nullable: false),
                     RepuestoId = table.Column<int>(type: "int", nullable: false),
-                    Cantidad = table.Column<int>(type: "int", nullable: false)
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    ServicioId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -406,6 +395,11 @@ namespace LogicaAccesoDatos.Migrations
                         principalTable: "ServicioMantenimientos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RepuestoUtilizados_Servicios_ServicioId",
+                        column: x => x.ServicioId,
+                        principalTable: "Servicios",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -434,11 +428,6 @@ namespace LogicaAccesoDatos.Migrations
                 column: "RolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Mantenimientos_ServicioId",
-                table: "Mantenimientos",
-                column: "ServicioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Proveedores_Nombre_Valor",
                 table: "Proveedores",
                 column: "Nombre_Valor",
@@ -450,14 +439,14 @@ namespace LogicaAccesoDatos.Migrations
                 column: "CompraId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Repuestos_ServicioMantenimientoId",
-                table: "Repuestos",
-                column: "ServicioMantenimientoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RepuestoUtilizados_RepuestoId",
                 table: "RepuestoUtilizados",
                 column: "RepuestoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RepuestoUtilizados_ServicioId",
+                table: "RepuestoUtilizados",
+                column: "ServicioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RepuestoUtilizados_ServicioMantenimientoId",
@@ -522,13 +511,10 @@ namespace LogicaAccesoDatos.Migrations
                 name: "Repuestos");
 
             migrationBuilder.DropTable(
-                name: "Compras");
-
-            migrationBuilder.DropTable(
                 name: "ServicioMantenimientos");
 
             migrationBuilder.DropTable(
-                name: "Proveedores");
+                name: "Compras");
 
             migrationBuilder.DropTable(
                 name: "Etapas");
@@ -538,6 +524,9 @@ namespace LogicaAccesoDatos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Servicios");
+
+            migrationBuilder.DropTable(
+                name: "Proveedores");
 
             migrationBuilder.DropTable(
                 name: "Vehiculos");

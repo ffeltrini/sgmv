@@ -19,7 +19,15 @@ namespace LogicaAccesoDatos.Repositorios
 
         public void Add(ServicioMantenimiento item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Contexto.ServicioMantenimientos.Add(item);
+                Contexto.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.InnerException.Message);
+            }
         }
 
         public void Update(ServicioMantenimiento item)

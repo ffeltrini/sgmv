@@ -11,6 +11,7 @@ namespace LogicaNegocio.EntidadesNegocio
     {
         public int Id { get; set; }
         public int ServicioId { get; set; }
+        public Servicio Servicio { get; set; }
         public int MantenimientoId { get; set; }
         public Mantenimiento Mantenimiento { get; set; }
         public DateTime Inicio { get; set; }
@@ -19,9 +20,8 @@ namespace LogicaNegocio.EntidadesNegocio
         public Etapa Etapa { get; set; }
         
         public string Observaciones { get; set; }
-        //public IEnumerable<Repuesto> ListaRepuestos { get; set; } = new List<Repuesto>();
-        public IEnumerable<RepuestoUtilizado> ListaRepuestosUtilizados { get; set; } = new List<RepuestoUtilizado>();
-        
+
+        public List<RepuestoUtilizado> ListaRepuestosUtilizados { get; set; } = new List<RepuestoUtilizado>();
 
     }
 }

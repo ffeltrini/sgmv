@@ -14,8 +14,8 @@ namespace LogicaNegocio.EntidadesNegocio
         public int Km { get; set; }
         public bool Siniestro { get; set; }
         public DateTime ProximoServicio { get; set; }
-        public IEnumerable<Mantenimiento> ListaMantenimientos { get; set; } = new List<Mantenimiento>();
-        public IEnumerable<ServicioMantenimiento> ListaServicioMantenimiento { get; set; } = new List<ServicioMantenimiento>();
-
+        //public IEnumerable<Mantenimiento> ListaMantenimientos { get; set; } = new List<Mantenimiento>();
+        public List<ServicioMantenimiento> ListaServicioMantenimiento { get; set; } = new List<ServicioMantenimiento>();
+        public IEnumerable<RepuestoUtilizado> ListaRepuestosUtilizados { get; set; }=new List<RepuestoUtilizado>();
     }
 }

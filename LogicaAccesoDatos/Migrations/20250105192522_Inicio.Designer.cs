@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogicaAccesoDatos.Migrations
 {
     [DbContext(typeof(SGMVContext))]
-    [Migration("20241229025247_ajustes01")]
-    partial class ajustes01
+    [Migration("20250105192522_Inicio")]
+    partial class Inicio
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -184,21 +184,11 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<int>("Frecuencia")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MantenimientoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ServicioId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Tarea")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MantenimientoId");
-
-                    b.HasIndex("ServicioId");
 
                     b.ToTable("Mantenimientos");
                 });
@@ -248,9 +238,6 @@ namespace LogicaAccesoDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ServicioMantenimientoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -264,8 +251,6 @@ namespace LogicaAccesoDatos.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompraId");
-
-                    b.HasIndex("ServicioMantenimientoId");
 
                     b.ToTable("Repuestos");
                 });
@@ -284,20 +269,20 @@ namespace LogicaAccesoDatos.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MantenimientoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RepuestoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ServicioMantenimientoId")
+                    b.Property<int?>("ServicioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServicioMantenimientoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MantenimientoId");
-
                     b.HasIndex("RepuestoId");
+
+                    b.HasIndex("ServicioId");
 
                     b.HasIndex("ServicioMantenimientoId");
 
@@ -608,17 +593,6 @@ namespace LogicaAccesoDatos.Migrations
                     b.Navigation("Repuesto");
                 });
 
-            modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Mantenimiento", b =>
-                {
-                    b.HasOne("LogicaNegocio.EntidadesNegocio.Mantenimiento", null)
-                        .WithMany("ListaRepuestos")
-                        .HasForeignKey("MantenimientoId");
-
-                    b.HasOne("LogicaNegocio.EntidadesNegocio.Servicio", null)
-                        .WithMany("ListaMantenimientos")
-                        .HasForeignKey("ServicioId");
-                });
-
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Proveedor", b =>
                 {
                     b.OwnsOne("LogicaNegocio.ValueObject.NombreProveedor", "Nombre", b1 =>
@@ -650,33 +624,29 @@ namespace LogicaAccesoDatos.Migrations
                     b.HasOne("LogicaNegocio.EntidadesNegocio.Compra", null)
                         .WithMany("ListaRepuestos")
                         .HasForeignKey("CompraId");
-
-                    b.HasOne("LogicaNegocio.EntidadesNegocio.ServicioMantenimiento", null)
-                        .WithMany("ListaRepuestos")
-                        .HasForeignKey("ServicioMantenimientoId");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.RepuestoUtilizado", b =>
                 {
-                    b.HasOne("LogicaNegocio.EntidadesNegocio.Mantenimiento", "Mantenimiento")
-                        .WithMany()
-                        .HasForeignKey("MantenimientoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LogicaNegocio.EntidadesNegocio.Repuesto", "Repuesto")
                         .WithMany()
                         .HasForeignKey("RepuestoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LogicaNegocio.EntidadesNegocio.ServicioMantenimiento", null)
+                    b.HasOne("LogicaNegocio.EntidadesNegocio.Servicio", null)
                         .WithMany("ListaRepuestosUtilizados")
-                        .HasForeignKey("ServicioMantenimientoId");
+                        .HasForeignKey("ServicioId");
 
-                    b.Navigation("Mantenimiento");
+                    b.HasOne("LogicaNegocio.EntidadesNegocio.ServicioMantenimiento", "ServicioMantenimiento")
+                        .WithMany("ListaRepuestosUtilizados")
+                        .HasForeignKey("ServicioMantenimientoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Repuesto");
+
+                    b.Navigation("ServicioMantenimiento");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Servicio", b =>
@@ -704,7 +674,7 @@ namespace LogicaAccesoDatos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LogicaNegocio.EntidadesNegocio.Servicio", null)
+                    b.HasOne("LogicaNegocio.EntidadesNegocio.Servicio", "Servicio")
                         .WithMany("ListaServicioMantenimiento")
                         .HasForeignKey("ServicioId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -713,6 +683,8 @@ namespace LogicaAccesoDatos.Migrations
                     b.Navigation("Etapa");
 
                     b.Navigation("Mantenimiento");
+
+                    b.Navigation("Servicio");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Usuario", b =>
@@ -760,11 +732,6 @@ namespace LogicaAccesoDatos.Migrations
                     b.Navigation("ListaRepuestos");
                 });
 
-            modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Mantenimiento", b =>
-                {
-                    b.Navigation("ListaRepuestos");
-                });
-
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Repuesto", b =>
                 {
                     b.Navigation("ListaCompraRepuesto");
@@ -772,15 +739,13 @@ namespace LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.Servicio", b =>
                 {
-                    b.Navigation("ListaMantenimientos");
+                    b.Navigation("ListaRepuestosUtilizados");
 
                     b.Navigation("ListaServicioMantenimiento");
                 });
 
             modelBuilder.Entity("LogicaNegocio.EntidadesNegocio.ServicioMantenimiento", b =>
                 {
-                    b.Navigation("ListaRepuestos");
-
                     b.Navigation("ListaRepuestosUtilizados");
                 });
 #pragma warning restore 612, 618

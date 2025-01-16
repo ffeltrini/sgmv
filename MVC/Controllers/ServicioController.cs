@@ -98,7 +98,7 @@ namespace MVC.Controllers
                         Id = sm.Id,
                         Tarea = sm.Mantenimiento.Tarea
                     }).ToList();
-                // Populate ListaCompraRepuesto
+                
                 servicioViewModel.ListaServicioMantenimiento = servicio.ListaServicioMantenimiento
                     .Select(sm => new ServicioMantenimientoViewModel
                     {
@@ -107,8 +107,14 @@ namespace MVC.Controllers
                         Inicio = sm.Inicio, 
                         Fin = sm.Fin,
                         Observaciones = sm.Observaciones
-                        //Siniestro = sm.Siniestro
-                        // Add any additional properties from CompraRepuesto if needed
+                    }).ToList();
+                servicioViewModel.ListaRepuestosUtilizados = servicio.ListaRepuestosUtilizados.
+                    Select(ru => new RepuestoUtilizadoViewModel
+                    {
+                        Id=ru.Id,
+                        Fecha=ru.Fecha,
+                        Repuesto=ru.Repuesto,
+                        Cantidad=ru.Cantidad
                     }).ToList();
                 listaServicioViewModel.Add(servicioViewModel);
             }
@@ -120,6 +126,7 @@ namespace MVC.Controllers
         {
             return View();
         }
+
 
         // GET: ServicioController/Create
         public ActionResult Create()
@@ -153,9 +160,9 @@ namespace MVC.Controllers
             }).ToList();
             servicioViewModel.Repuestos = CUGetAllRepuesto.GetAllRepuesto().Select(r => new RepuestoViewModel
             {
-                Id=r.Id,
-                Codigo= r.Codigo,
-                Nombre= r.Nombre
+                Id = r.Id,
+                Codigo = r.Codigo,
+                Nombre = r.Nombre
             }).ToList();
 
             return View(servicioViewModel);
@@ -227,8 +234,6 @@ namespace MVC.Controllers
                         //ServicioMantenimiento servicioMantenimiento = new ServicioMantenimiento();
                         List<ServicioMantenimiento> listaServicioMantenimiento = new List<ServicioMantenimiento>();
 
-
-
                         for (int i = 0; i < servicioViewModel.MantenimientosId.Length; i++)
                         {
                             ServicioMantenimiento servicioMantenimiento = new ServicioMantenimiento
@@ -240,21 +245,28 @@ namespace MVC.Controllers
                                 EtapaId = servicioViewModel.EtapaId[i],
                                 Observaciones = servicioViewModel.Observaciones[i]
                             };
+                            CUCreateServicioMantenimiento.CreateServicioMantenimiento(servicioMantenimiento);
 
-                            // Verificar si RepuestosUtilizados está inicializado y si el índice i es válido
-                            if (servicioViewModel.ListaRepuestosUtilizados != null &&
-                                servicioViewModel.ListaRepuestosUtilizados.Count() > i)
+                            // Filtrar los repuestos utilizados para este mantenimiento específico
+                            if (servicioViewModel.ListaRepuestosUtilizados != null)
                             {
                                 List<RepuestoUtilizado> listaRepuestosUtilizados = new List<RepuestoUtilizado>();
 
-                                foreach (var repuestoUtilizadoVM in servicioViewModel.ListaRepuestosUtilizados)
+                                // Filtrar solo los repuestos que pertenecen al mantenimiento actual
+                                var repuestosParaEsteMantenimiento = servicioViewModel.ListaRepuestosUtilizados
+                                    .Where(ru => ru.ServicioMantenimientoId == servicioMantenimiento.Id).ToList();
+
+
+
+
+                                foreach (var repuestoUtilizadoVM in repuestosParaEsteMantenimiento)
                                 {
                                     RepuestoUtilizado repuestoUtilizado = new RepuestoUtilizado()
                                     {
                                         RepuestoId = repuestoUtilizadoVM.RepuestoId,
-                                        ServicioMantenimientoId=repuestoUtilizadoVM.ServicioMantenimientoId,
+                                        ServicioMantenimientoId = servicioMantenimiento.Id,  // Aquí se asigna al mantenimiento actual
                                         Cantidad = repuestoUtilizadoVM.Cantidad,
-                                        Fecha = DateTime.Now
+                                        Fecha = DateTime.Now,
                                     };
 
                                     listaRepuestosUtilizados.Add(repuestoUtilizado);
@@ -264,12 +276,13 @@ namespace MVC.Controllers
                             }
                             else
                             {
-                                // Si no hay repuestos utilizados, asignar una lista vacía (opcional)
+                                // Si no hay repuestos utilizados, asignar una lista vacía
                                 servicioMantenimiento.ListaRepuestosUtilizados = new List<RepuestoUtilizado>();
                             }
 
                             listaServicioMantenimiento.Add(servicioMantenimiento);
                         }
+
 
 
 
@@ -302,6 +315,7 @@ namespace MVC.Controllers
 
             return View(servicioViewModel);
         }
+
 
 
         // GET: ServicioController/Edit/5

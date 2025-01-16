@@ -69,7 +69,7 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RepuestoViewModel repuestoViewModel,string operacion)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -87,7 +87,9 @@ namespace MVC.Controllers
 
                     Auditoria auditoria = new Auditoria()
                     {
+                        Cedula = HttpContext.Session.GetString("cedula"),
                         NombreUsuario = HttpContext.Session.GetString("nombre"),
+                        ApellidoUsuario = HttpContext.Session.GetString("apellido"),
                         FechaHora = DateTime.Now,
                         IdEntidad = repuesto.Id,
                         TipoEntidad = repuesto.GetType().Name.ToString(),

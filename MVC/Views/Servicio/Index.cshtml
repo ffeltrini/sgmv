@@ -13,56 +13,59 @@
         table th,
         table td {
             padding: 8px;
-            /*border: 1px solid #ddd;*/
         }
 
-            /* Set fixed widths for each column */
             table th:nth-child(1),
             table td:nth-child(1) {
-                width: 200px; /* Adjust the width as needed */
+                width: 200px;
             }
 
             table th:nth-child(2),
             table td:nth-child(2) {
-                width: 200px; /* Adjust the width as needed */
+                width: 200px;
             }
 
             table th:nth-child(3),
             table td:nth-child(3) {
-                width: 265px; /* Adjust the width as needed */
+                width: 265px;
             }
 
             table th:nth-child(4),
             table td:nth-child(4) {
-                width: 50px; /* Adjust the width as needed */
+                width: 50px;
             }
 
             table th:nth-child(5),
             table td:nth-child(5) {
-                width: 50px; /* Adjust the width as needed */
+                width: 50px;
             }
 
             table th:nth-child(6),
             table td:nth-child(6) {
-                width: 50px; /* Adjust the width as needed */
+                width: 50px;
             }
 
-            .section-mantenimientos th:nth-child(1),
-            .section-mantenimientos td:nth-child(1) {
-                width: 200px; /* Ajusta al doble del tamaño actual */
-            }
-            .section-mantenimientos th:nth-child(4),
-            .section-mantenimientos td:nth-child(4) {
-                width: 350px; /* Ajusta al doble del tamaño actual */
-            }
+    .section-mantenimientos th:nth-child(1),
+    .section-mantenimientos td:nth-child(1) {
+        width: 200px;
+    }
+
+    .section-mantenimientos th:nth-child(4),
+    .section-mantenimientos td:nth-child(4) {
+        width: 350px;
+    }
+
+    .section-repuestos {
+        background-color: #f1f1f1;
+    }
 </style>
 
 <h1>Listado de Servicios</h1>
 
 <p>
     <a class="btn btn-primary" asp-action="Create">Alta Servicio</a>
-   
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -72,9 +75,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
-            <th>
-                Vehículo
-            </th>
+            <th>Vehículo</th>
             <th>
                 @Html.DisplayNameFor(model => model.Km)
             </th>
@@ -84,24 +85,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProximoServicio)
             </th>
-            <th>
-                Mantenimientos
-            </th>
-            @*<th>
-            Acciones
-            </th>*@
+            <th>Mantenimientos</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var servicio in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => servicio.Id)
-                </td>
-                <td>
-                    @servicio.Fecha.ToShortDateString()
-                </td>
+                <td>@Html.DisplayFor(modelItem => servicio.Id)</td>
+                <td>@servicio.Fecha.ToShortDateString()</td>
                 <td>
                     @if (servicio.VehiculoId != null)
                     {
@@ -112,64 +104,59 @@
                         }
                     }
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => servicio.Km)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => servicio.Siniestro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => servicio.ProximoServicio)
-                </td>
+                <td>@Html.DisplayFor(modelItem => servicio.Km)</td>
+                <td>@Html.DisplayFor(modelItem => servicio.Siniestro)</td>
+                <td>@Html.DisplayFor(modelItem => servicio.ProximoServicio)</td>
                 <td>
                     <label class="form-switch">
                         <input onclick="toggleSection(this)" type="checkbox" class="form-switch-input toggle-mantenimientos-details">
                         <span class="form-switch-slider"></span>
                     </label>
                 </td>
-                
-                
             </tr>
-            @if (ViewData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger">
-                    @ViewData["ErrorMessage"]
-                </div>
-            }
+
             <!-- Mantenimientos details header -->
             <tr class="section-mantenimientos" style="display: none;">
                 <th style="background-color: #5d6161; color:#FFFFFF;">Mantenimiento</th>
                 <th style="background-color: #5d6161; color:#FFFFFF;">Inicio</th>
                 <th style="background-color: #5d6161; color:#FFFFFF;">Fin</th>
                 <th style="background-color: #5d6161; color:#FFFFFF;">Observaciones</th>
+                <th style="background-color: #5d6161; color:#FFFFFF;">Repuestos</th>
+            </tr>
 
-                @foreach (var mantenimiento in servicio.ListaServicioMantenimiento)
-                {
+            @foreach (var mantenimiento in servicio.ListaServicioMantenimiento)
+            {
                 <tr class="section-mantenimientos" style="display: none; background-color: #BFC9CA;">
                     <td>@mantenimiento.Mantenimiento.Tarea</td>
                     <td>@mantenimiento.Inicio</td>
                     <td>@mantenimiento.Fin</td>
                     <td style="white-space: pre-wrap; word-wrap: break-word;">@mantenimiento.Observaciones</td>
-                    
+                    <td>
+                        @if (mantenimiento.Repuestos != null && mantenimiento.Repuestos.Any())
+                        {
+                            <ul>
+                                @foreach (var repuesto in mantenimiento.Repuestos)
+                                {
+                                    <li>@repuesto.Nombre - Cantidad: @repuesto.Cantidad</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>No se utilizaron repuestos</p>
+                        }
+                    </td>
                 </tr>
-                }
-
-            <tr class="section-mantenimientos" style="display: none;">
-                    @*<td colspan="2"></td>*@
-                
-            </tr>
-            </tr>
+            }
         }
     </tbody>
 </table>
 
-@section scripts{
+@section scripts {
     <script>
         function toggleSection(checkbox) {
             $(checkbox).closest('tr').nextUntil(':not(.section-mantenimientos)').toggle();
         }
-
-        
     </script>
 }
 

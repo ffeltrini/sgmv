@@ -16,9 +16,10 @@ namespace MVC.Models
         public int[] RepuestosId { get; set; }
         public DateTime[] Fecha { get; set; }
         public int[] Cantidad { get; set; }
-        //public IEnumerable<RepuestoUtilizadoViewModel> ListaRepuestoUtilizado { get; set; } = new List<RepuestoUtilizadoViewModel>();
+        
         public IEnumerable<EtapaViewModel> Etapas { get; set; } = new List<EtapaViewModel>();
         public IEnumerable<RepuestoViewModel> Repuestos { get; set; } = new List<RepuestoViewModel>();
-        
+        public List<RepuestoUtilizadoViewModel> ListaRepuestosUtilizados { get; set; } = new List<RepuestoUtilizadoViewModel>();
+
     }
 }

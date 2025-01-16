@@ -67,7 +67,9 @@ namespace MVC.Controllers
                     CUCreateEtapa.CreateEtapa(etapa);
                     Auditoria auditoria = new Auditoria()
                     {
+                        Cedula = HttpContext.Session.GetString("cedula"),
                         NombreUsuario = HttpContext.Session.GetString("nombre"),
+                        ApellidoUsuario = HttpContext.Session.GetString("apellido"),
                         FechaHora = DateTime.Now,
                         IdEntidad = etapa.Id,
                         TipoEntidad = etapa.GetType().Name.ToString(),

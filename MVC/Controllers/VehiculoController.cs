@@ -182,7 +182,9 @@ namespace MVC.Controllers
                 CUCreateVehiculo.CreateVehiculo(vehiculo);
                 Auditoria auditoria = new Auditoria()
                 {
+                    Cedula = HttpContext.Session.GetString("cedula"),
                     NombreUsuario = HttpContext.Session.GetString("nombre"),
+                    ApellidoUsuario = HttpContext.Session.GetString("apellido"),
                     FechaHora = DateTime.Now,
                     IdEntidad = vehiculo.Id,
                     TipoEntidad = vehiculo.GetType().Name.ToString(),

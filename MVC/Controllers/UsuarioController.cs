@@ -127,7 +127,7 @@ namespace MVC.Controllers
                 Id = t.Id,
                 Rol = t.Rol
             });
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (usuarioViewModel.Contrasenia != usuarioViewModel.Confirmacion)
                 {

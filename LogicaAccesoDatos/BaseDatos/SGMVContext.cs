@@ -38,6 +38,17 @@ namespace LogicaAccesoDatos.BaseDatos
             modelBuilder.Entity<Cliente>().ToTable("Clientes");
             modelBuilder.Entity<Empleado>().ToTable("Empleados");
 
+            modelBuilder.Entity<RepuestoUtilizado>()
+                .HasOne(ru => ru.ServicioMantenimiento)
+                .WithMany(sm => sm.ListaRepuestosUtilizados)
+                .HasForeignKey(ru => ru.ServicioMantenimientoId);
+
+            modelBuilder.Entity<RepuestoUtilizado>()
+                .HasOne(ru => ru.Repuesto)
+                .WithMany()  // O con la relación correcta
+                .HasForeignKey(ru => ru.RepuestoId);
+
+
         }
 
     }
