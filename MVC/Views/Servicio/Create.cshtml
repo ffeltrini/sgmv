@@ -65,6 +65,7 @@
     <script>
         let mantenimientoIndex = 0;
         let repuestoIndex = 0; // Este índice será global para llevar la cuenta de todos los repuestos
+        let repuestosPorMantenimiento = {}; // Objeto que almacenará los repuestos por mantenimiento
 
         function addMantenimiento() {
             const mantenimientosContainer = document.getElementById('mantenimientos-container');
@@ -76,10 +77,10 @@
                             <label>Mantenimiento</label>
                             <select name="MantenimientosId[${mantenimientoIndex}]" class="form-control">
                                 <option value="">-- Seleccione un Mantenimiento --</option>
-                                @foreach (var mantenimiento in Model.Mantenimientos)
-                                {
-                                    <option value="@mantenimiento.Id">@mantenimiento.Tarea</option>
-                                }
+        @foreach (var mantenimiento in Model.Mantenimientos)
+        {
+                                        <option value="@mantenimiento.Id">@mantenimiento.Tarea</option>
+        }
                             </select>
                         </div>
 
@@ -97,10 +98,10 @@
                             <label>Etapa</label>
                             <select name="EtapaId[${mantenimientoIndex}]" class="form-control">
                                 <option value="">-- Seleccione una Etapa --</option>
-                                @foreach (var etapa in Model.Etapas)
-                                {
-                                    <option value="@etapa.Id">@etapa.EtapaNombre</option>
-                                }
+        @foreach (var etapa in Model.Etapas)
+        {
+                                        <option value="@etapa.Id">@etapa.EtapaNombre</option>
+        }
                             </select>
                         </div>
                     </div>
@@ -119,32 +120,45 @@
             `;
 
             mantenimientosContainer.insertAdjacentHTML('beforeend', mantenimientoHtml);
+
+            // Inicializar el array de repuestos para este mantenimiento
+            repuestosPorMantenimiento[mantenimientoIndex] = [];
+
             mantenimientoIndex++;
         }
 
         function addRepuesto(mantenimientoIndex) {
+            console.log('Añadiendo Repuesto a Mantenimiento:', mantenimientoIndex, 'Repuesto Index:', repuestoIndex);  // Verifica el mantenimiento y el índice del repuesto
             const repuestosContainer = document.getElementById(`repuestos-container-${mantenimientoIndex}`);
             const repuestoHtml = `
                 <div class="repuesto-item">
                     <div class="form-group">
                         <label>Repuesto</label>
-                        <select name="ListaRepuestosUtilizados[${repuestoIndex}].RepuestoId" class="form-control">
+                        <select name="ListaRepuestosUtilizados[${mantenimientoIndex}][${repuestoIndex}].RepuestoId" class="form-control">
                             <option value="">-- Seleccione un Repuesto --</option>
-                            @foreach (var repuesto in Model.Repuestos)
-                            {
-                                <option value="@repuesto.Id">@repuesto.Nombre</option>
-                            }
+        @foreach (var repuesto in Model.Repuestos)
+        {
+                                    <option value="@repuesto.Id">@repuesto.Nombre</option>
+        }
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label>Cantidad</label>
-                        <input type="number" name="ListaRepuestosUtilizados[${repuestoIndex}].Cantidad" class="form-control" />
+                        <input type="number" name="ListaRepuestosUtilizados[${mantenimientoIndex}][${repuestoIndex}].Cantidad" class="form-control" />
                     </div>
                 </div>
             `;
             repuestosContainer.insertAdjacentHTML('beforeend', repuestoHtml);
+
+            // Agregar repuesto al array de repuestos de este mantenimiento
+            repuestosPorMantenimiento[mantenimientoIndex].push({
+                RepuestoId: "",
+                Cantidad: 0
+            });
+
             repuestoIndex++; // Incrementamos repuestoIndex para cada nuevo repuesto
         }
     </script>
+
 }

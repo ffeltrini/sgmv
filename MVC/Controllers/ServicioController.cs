@@ -114,7 +114,7 @@ namespace MVC.Controllers
                         Id=ru.Id,
                         Fecha=ru.Fecha,
                         Repuesto=ru.Repuesto,
-                        Cantidad=ru.Cantidad
+                        Cantidad = ru.Cantidad
                     }).ToList();
                 listaServicioViewModel.Add(servicioViewModel);
             }

@@ -16,5 +16,6 @@ namespace LogicaNegocio.EntidadesNegocio
         public Repuesto Repuesto { get; set; }
         public int Cantidad { get; set; }
         
+        
     }
 }

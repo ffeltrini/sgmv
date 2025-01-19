@@ -13,13 +13,12 @@ namespace MVC.Models
         public DateTime Fin { get; set; }
         public string Observaciones { get; set; }
         public int EtapaId { get; set; }
-        public int[] RepuestosId { get; set; }
         public DateTime[] Fecha { get; set; }
+        public int[] RepuestosId { get; set; }
         public int[] Cantidad { get; set; }
         
         public IEnumerable<EtapaViewModel> Etapas { get; set; } = new List<EtapaViewModel>();
         public IEnumerable<RepuestoViewModel> Repuestos { get; set; } = new List<RepuestoViewModel>();
-        public List<RepuestoUtilizadoViewModel> ListaRepuestosUtilizados { get; set; } = new List<RepuestoUtilizadoViewModel>();
 
     }
 }
